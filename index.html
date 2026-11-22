@@ -2,1599 +2,1077 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>恋人类型图鉴 · 你在爱里是哪一种</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>你是哪一种恋人 · 依恋类型深度测评</title>
 <style>
 :root{
-  --bg0:#0d0b14; --bg1:#16121f; --bg2:#211a2e;
-  --ink:#f2edf7; --muted:#a99db8; --line:rgba(255,255,255,.08);
-  --accent:#d4b8ff; --accent2:#ffb8d9; --gold:#f5d48a;
-  --card:rgba(255,255,255,.045);
-  --r:22px;
+  --pink-50:#FFF7FA; --pink-100:#FFE9F1; --pink-200:#FFD3E3; --pink-300:#FFB3CE;
+  --pink-400:#FF8AB5; --pink-500:#F9629B; --pink-600:#E23F7E;
+  --ink:#2A1F2D; --ink-2:#5B4A5E; --muted:#9C8B9F;
+  --line:rgba(42,31,45,.08);
+  --shadow:0 24px 60px -22px rgba(226,63,126,.30);
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-html,body{height:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
 body{
-  font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",system-ui,sans-serif;
+  font-family:var(--font);color:var(--ink);
   background:
-    radial-gradient(1200px 800px at 15% -10%, rgba(160,110,230,.22), transparent 55%),
-    radial-gradient(900px 700px at 110% 20%, rgba(255,130,180,.16), transparent 50%),
-    linear-gradient(160deg, var(--bg0), var(--bg1) 45%, var(--bg2));
-  color:var(--ink); min-height:100dvh; overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
+    radial-gradient(1100px 560px at 50% -12%, #FFE0EE 0%, transparent 62%),
+    radial-gradient(900px 520px at 112% 108%, #FFF0F7 0%, transparent 58%),
+    linear-gradient(180deg,#FFF8FB 0%,#FFFFFF 46%,#FFF4F9 100%);
+  min-height:100vh;min-height:100dvh;overflow:hidden;
 }
 body::before{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background-image:radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
-  background-size:22px 22px; opacity:.5;
-  mask-image:linear-gradient(to bottom, transparent, #000 20%, #000 80%, transparent);
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(249,98,155,.14) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(circle at 50% 28%, #000 0%, transparent 74%);
+  mask-image:radial-gradient(circle at 50% 28%, #000 0%, transparent 74%);
 }
-#app{position:relative; z-index:1; max-width:520px; margin:0 auto; padding:0 18px 40px; min-height:100dvh}
-.screen{display:none; animation:screenIn .5s cubic-bezier(.2,.8,.25,1)}
-.screen.active{display:block}
-@keyframes screenIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#app{
+  position:relative;z-index:2;width:100%;max-width:540px;margin:0 auto;
+  height:100vh;height:100dvh;overflow:hidden;
+}
+@media(min-width:640px){
+  #app{box-shadow:0 0 90px -30px rgba(226,63,126,.22);border-radius:0}
+}
+.screen{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  padding:38px 24px 56px;
+  opacity:0;transform:translateY(26px) scale(.985);pointer-events:none;
+  transition:opacity .55s ease, transform .6s cubic-bezier(.22,1,.36,1);
+}
+.screen.is-active{opacity:1;transform:none;pointer-events:auto}
+.screen::-webkit-scrollbar{display:none}
 
 /* ---------- 通用 ---------- */
-.eyebrow{font-size:11px;letter-spacing:.32em;color:var(--muted);text-transform:uppercase}
-.h1{font-family:"Songti SC","Noto Serif SC",serif;font-size:clamp(34px,9vw,46px);line-height:1.08;letter-spacing:-.01em;margin:14px 0 10px}
-.h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{color:var(--muted);font-size:14px;line-height:1.75}
-.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;color:var(--muted);font-weight:600}
+.brand .dot{width:6px;height:6px;border-radius:50%;background:var(--pink-500);box-shadow:0 0 0 4px rgba(249,98,155,.14);animation:dotPulse 2.2s infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 3px rgba(249,98,155,.16)}50%{box-shadow:0 0 0 8px rgba(249,98,155,.04)}}
+.grad{background:linear-gradient(115deg,#FFA6C8 0%,#F9629B 46%,#E23F7E 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:0;cursor:pointer;font-family:var(--font);font-weight:700;font-size:16px;
+  border-radius:999px;padding:17px 34px;transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .3s;
+}
+.btn-primary{
+  color:#fff;background:linear-gradient(135deg,#FF8AB5,#F9629B 55%,#E23F7E);
+  box-shadow:0 18px 40px -14px rgba(226,63,126,.62), inset 0 1px 0 rgba(255,255,255,.35);
+  width:100%;max-width:320px;
+}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{
+  color:var(--pink-600);background:#fff;border:1px solid var(--pink-200);
+  box-shadow:0 10px 26px -16px rgba(226,63,126,.5);
+}
+.tip{font-size:12px;color:var(--muted);letter-spacing:.04em;text-align:center}
+.step-tag{font-size:11px;letter-spacing:.2em;color:var(--pink-500);font-weight:700;margin:0 0 14px}
+.h2{font-size:27px;font-weight:800;letter-spacing:-.02em;margin:0 0 10px;line-height:1.3}
+.sub{font-size:13.5px;line-height:1.85;color:var(--ink-2);margin:0 0 26px}
 
 /* ---------- 封面 ---------- */
-.cover{padding-top:clamp(40px,9vh,80px)}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;border:1px solid rgba(212,184,255,.25);background:rgba(212,184,255,.07);font-size:11px;letter-spacing:.12em;color:var(--accent)}
-.badge i{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
-@keyframes pulse{50%{opacity:.35}}
-.coverCard{margin-top:26px;padding:22px 20px}
-.coverCard .row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}
-.coverCard .row:last-child{border-bottom:0}
-.coverCard .row span:first-child{color:var(--muted)}
-.coverCard .row span:last-child{font-weight:600}
-.genderTitle{margin:30px 0 12px;font-size:13px;color:var(--muted);letter-spacing:.06em}
-.genderGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.genderBtn{
-  position:relative;padding:18px 12px;border-radius:18px;border:1px solid var(--line);
-  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  color:var(--ink);font-size:15px;font-weight:600;cursor:pointer;overflow:hidden;
-  transition:.3s cubic-bezier(.2,.8,.25,1);
+#sIntro .wrap{padding-top:16px}
+#sIntro .brand{margin-bottom:44px}
+.hero-title{font-size:clamp(38px,11.4vw,50px);line-height:1.14;font-weight:800;letter-spacing:-.035em;margin:0 0 20px}
+.hero-title em{font-style:normal;position:relative;display:inline-block}
+.hero-title em::after{
+  content:'';position:absolute;left:-2px;right:-2px;bottom:6px;height:12px;border-radius:6px;
+  background:linear-gradient(90deg,rgba(255,179,206,.55),rgba(255,138,181,.18));z-index:-1;
 }
-.genderBtn small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.04em}
-.genderBtn:active{transform:scale(.97)}
-.genderBtn.sel{border-color:rgba(212,184,255,.7);background:linear-gradient(160deg,rgba(212,184,255,.18),rgba(255,184,217,.08));box-shadow:0 0 0 3px rgba(212,184,255,.1),0 14px 40px -18px rgba(212,184,255,.5)}
-.genderBtn.sel::after{content:"";position:absolute;top:10px;right:12px;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
-.startBtn{
-  width:100%;margin-top:18px;padding:17px;border-radius:18px;border:0;cursor:pointer;
-  font-size:16px;font-weight:800;letter-spacing:.04em;color:#1a1124;
-  background:linear-gradient(105deg,var(--accent),var(--accent2));
-  box-shadow:0 18px 50px -22px rgba(212,184,255,.8);
-  transition:.3s cubic-bezier(.2,.8,.25,1);
+.hero-sub{font-size:14px;line-height:2;color:var(--ink-2);margin:0 0 34px}
+.feature-row{display:flex;gap:10px;margin-bottom:38px}
+.feat{
+  flex:1;background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:18px;
+  padding:16px 10px;text-align:center;backdrop-filter:blur(10px);
+  animation:featIn .7s cubic-bezier(.22,1,.36,1) both;
 }
-.startBtn:disabled{opacity:.3;filter:grayscale(.6);cursor:not-allowed;box-shadow:none}
-.startBtn:not(:disabled):active{transform:scale(.98)}
-.footNote{text-align:center;font-size:11px;color:rgba(255,255,255,.32);margin-top:16px;line-height:1.7}
+.feat:nth-child(1){animation-delay:.08s}
+.feat:nth-child(2){animation-delay:.16s}
+.feat:nth-child(3){animation-delay:.24s}
+@keyframes featIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.feat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--pink-600)}
+.feat span{display:block;font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.06em}
+.center{text-align:center}
+#sIntro .btn-primary{margin:0 auto;display:flex}
+#sIntro .tip{margin-top:16px}
+
+/* ---------- 性别 ---------- */
+.gender-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.g-card{
+  position:relative;overflow:hidden;cursor:pointer;
+  background:#fff;border:1.5px solid var(--line);border-radius:24px;
+  padding:26px 12px 22px;display:flex;flex-direction:column;align-items:center;gap:12px;
+  font-family:var(--font);transition:all .35s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 10px 30px -22px rgba(226,63,126,.6);
+}
+.g-card::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:.35s;
+  background:radial-gradient(120px 90px at 50% 0%, rgba(255,179,206,.5), transparent 70%);
+}
+.g-card:hover,.g-card:active{transform:translateY(-5px);border-color:var(--pink-300);box-shadow:0 24px 44px -20px rgba(226,63,126,.55)}
+.g-card:hover::before{opacity:1}
+.g-icon{width:64px;height:64px;position:relative;z-index:1}
+.g-name{font-size:17px;font-weight:800;letter-spacing:.02em;position:relative;z-index:1}
+.g-desc{font-size:11px;color:var(--muted);letter-spacing:.02em;position:relative;z-index:1}
+.g-card .ring{
+  position:absolute;width:120px;height:120px;border-radius:50%;border:1px dashed var(--pink-200);
+  top:-46px;right:-46px;opacity:.7;
+}
 
 /* ---------- 答题 ---------- */
-.testTop{display:flex;align-items:center;gap:14px;padding:20px 0 14px}
-.ringWrap{position:relative;width:52px;height:52px;flex:0 0 52px}
-.ringWrap svg{transform:rotate(-90deg)}
-.ringBg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:4}
-.ringFg{fill:none;stroke:url(#ringGrad);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.2,.8,.25,1)}
-.ringNum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--accent)}
-.testMeta{flex:1;min-width:0}
-.testMeta .qIndex{font-size:11px;letter-spacing:.18em;color:var(--muted)}
-.testMeta .qDim{font-size:12px;margin-top:4px;color:var(--gold);letter-spacing:.04em}
-.quitBtn{border:0;background:transparent;color:rgba(255,255,255,.35);font-size:12px;cursor:pointer;padding:8px}
-.barTrack{height:3px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-bottom:30px}
-.barFill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .45s cubic-bezier(.2,.8,.25,1)}
-.question{font-family:"Songti SC","Noto Serif SC",serif;font-size:clamp(21px,5.6vw,26px);line-height:1.5;min-height:96px;letter-spacing:-.005em;transition:opacity .22s,transform .22s}
-.question.out{opacity:0;transform:translateY(8px)}
-.options{display:flex;flex-direction:column;gap:10px;margin-top:24px}
-.opt{
-  display:flex;align-items:flex-start;gap:12px;padding:16px 15px;border-radius:16px;
-  border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);
-  font-size:14px;line-height:1.55;text-align:left;cursor:pointer;
-  transition:.22s cubic-bezier(.2,.8,.25,1);position:relative;overflow:hidden;
+.quiz-shell{padding-top:8px;display:flex;flex-direction:column;min-height:calc(100dvh - 94px)}
+.quiz-head{margin-bottom:26px}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
+.qidx{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.qidx b{font-size:17px;color:var(--ink);font-weight:800;letter-spacing:-.01em}
+.qidx i{font-style:normal}
+.pct{font-size:12px;font-weight:700;color:var(--pink-500);letter-spacing:.05em}
+.bar{height:5px;border-radius:99px;background:var(--pink-100);overflow:hidden;position:relative}
+.bar-fill{
+  height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#FFC9DD,#FF8AB5 50%,#F9629B);
+  box-shadow:0 0 14px rgba(249,98,155,.6);
+  transition:width .55s cubic-bezier(.22,1,.36,1);
 }
-.opt .dot{width:18px;height:18px;flex:0 0 18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.22s}
-.opt .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:transparent;transition:.22s}
-.opt:active{transform:scale(.985)}
-.opt.sel{border-color:rgba(212,184,255,.65);background:rgba(212,184,255,.1)}
-.opt.sel .dot{border-color:var(--accent)}
-.opt.sel .dot::after{background:var(--accent);box-shadow:0 0 10px var(--accent)}
-.opt .kbd{margin-left:auto;font-size:10px;color:rgba(255,255,255,.22);letter-spacing:.08em;flex:0 0 auto;margin-top:2px}
-.backBtn{margin-top:22px;border:0;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;padding:8px 0;letter-spacing:.04em}
-.backBtn:disabled{opacity:.2}
+.q-card{
+  background:rgba(255,255,255,.9);backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:28px;padding:28px 22px 22px;
+  box-shadow:var(--shadow);flex:1;display:flex;flex-direction:column;
+}
+.q-card.in{animation:cardIn .48s cubic-bezier(.22,1,.36,1) both}
+.q-card.out{animation:cardOut .22s ease forwards}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes cardOut{to{opacity:0;transform:translateY(-14px) scale(.98)}}
+.q-tag{
+  display:inline-flex;align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.14em;
+  color:var(--pink-600);background:var(--pink-100);padding:5px 11px;border-radius:99px;margin-bottom:16px;
+}
+.q-text{font-size:19px;line-height:1.7;font-weight:700;letter-spacing:-.01em;margin:0 0 26px;min-height:96px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;
+  padding:14px 15px;border-radius:16px;border:1.5px solid var(--line);background:#fff;
+  font-family:var(--font);font-size:14.5px;color:var(--ink-2);text-align:left;cursor:pointer;
+  transition:all .26s cubic-bezier(.22,1,.36,1);
+}
+.opt .k{
+  width:25px;height:25px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:var(--pink-100);color:var(--pink-600);font-size:11px;font-weight:800;transition:.26s;
+}
+.opt:hover{transform:translateX(4px);border-color:var(--pink-300);background:var(--pink-50);box-shadow:0 12px 26px -16px rgba(249,98,155,.8)}
+.opt.picked{background:linear-gradient(135deg,#FF8AB5,#F9629B);color:#fff;border-color:transparent;transform:scale(.975);box-shadow:0 16px 30px -14px rgba(226,63,126,.7)}
+.opt.picked .k{background:rgba(255,255,255,.28);color:#fff}
+.hint{font-size:12px;color:var(--muted);text-align:center;margin:20px 0 0;letter-spacing:.03em;transition:.3s}
+.hint.pop{animation:hintPop .5s ease}
+@keyframes hintPop{0%{transform:scale(.9);opacity:0}100%{transform:none;opacity:1}}
 
-/* ---------- 计算中 ---------- */
-.calc{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:78dvh;text-align:center}
-.calcOrb{width:96px;height:96px;border-radius:50%;background:conic-gradient(from 0deg,var(--accent),var(--accent2),var(--gold),var(--accent));filter:blur(1px);animation:spin 1.6s linear infinite;position:relative}
-.calcOrb::after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--bg1)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.calcTxt{margin-top:26px;font-size:14px;color:var(--muted);letter-spacing:.08em;min-height:22px}
-.calcStep{font-size:11px;color:rgba(255,255,255,.25);margin-top:8px;letter-spacing:.12em}
+/* ---------- 加载 ---------- */
+#sLoading{display:flex;align-items:center;justify-content:center}
+.loading-wrap{text-align:center;width:100%;padding-bottom:60px}
+.pulse-heart{font-size:52px;color:var(--pink-500);animation:beat 1.1s infinite;filter:drop-shadow(0 8px 22px rgba(249,98,155,.5))}
+@keyframes beat{0%,100%{transform:scale(1)}18%{transform:scale(1.22)}36%{transform:scale(1)}54%{transform:scale(1.14)}}
+.loading-text{font-size:14px;color:var(--ink-2);margin:26px 0 22px;letter-spacing:.06em;font-weight:600;min-height:20px}
+.load-bar{width:180px;height:4px;border-radius:99px;background:var(--pink-100);margin:0 auto;overflow:hidden}
+.load-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#FFB3CE,#F9629B);transition:width .5s linear}
 
 /* ---------- 结果 ---------- */
-.resultHero{padding:30px 0 0;text-align:center}
-.resultHero .tag{display:inline-block;font-size:10px;letter-spacing:.28em;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
-.avatarBox{margin:18px auto 0;width:170px;height:170px;position:relative}
-.avatarBox svg{width:100%;height:100%;filter:drop-shadow(0 20px 40px rgba(0,0,0,.45))}
-.typeName{font-family:"Songti SC","Noto Serif SC",serif;font-size:clamp(30px,8.4vw,40px);margin-top:6px;letter-spacing:-.01em}
-.typeEn{font-size:10px;letter-spacing:.3em;color:var(--muted);margin-top:6px;text-transform:uppercase}
-.typeLine{font-size:14px;color:var(--accent);margin-top:12px;line-height:1.7;padding:0 10px}
-.resultCard{margin-top:22px;padding:20px 18px}
-.resultCard h3{font-size:13px;letter-spacing:.12em;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.resultCard h3::before{content:"";width:14px;height:1px;background:var(--gold)}
-.resultCard p{font-size:13.5px;line-height:1.85;color:rgba(242,237,247,.86)}
-.resultCard p + p{margin-top:10px}
-.resultCard strong{color:var(--ink);font-weight:700}
-.dimList{display:flex;flex-direction:column;gap:13px;margin-top:4px}
-.dimRow .dimTop{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-bottom:6px}
-.dimRow .dimTop b{color:var(--ink);font-weight:700;font-size:12px}
-.dimTrack{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
-.dimFill{height:100%;border-radius:99px;width:0;transition:width 1s cubic-bezier(.2,.8,.25,1)}
-.dimFill.c1{background:linear-gradient(90deg,#c9a7ff,#e4c9ff)}
-.dimFill.c2{background:linear-gradient(90deg,#ff9ec7,#ffc4dc)}
-.dimFill.c3{background:linear-gradient(90deg,#f5d48a,#ffe9b5)}
-.dimFill.c4{background:linear-gradient(90deg,#8fd9c8,#c2efe4)}
-.radarBox{display:flex;justify-content:center;padding:8px 0 4px}
-.matchGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-.matchCell{padding:13px 12px;border-radius:14px;border:1px solid var(--line);font-size:11.5px;line-height:1.6}
-.matchCell b{display:block;font-size:10px;letter-spacing:.14em;margin-bottom:6px;font-weight:700}
-.matchCell.good b{color:#8fd9c8}.matchCell.bad b{color:#ff9ec7}
-.adviceList{display:flex;flex-direction:column;gap:11px}
-.adviceItem{display:flex;gap:12px;padding:13px 14px;border-radius:15px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
-.adviceItem .no{flex:0 0 22px;height:22px;border-radius:50%;background:rgba(212,184,255,.14);color:var(--accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
-.adviceItem div{font-size:12.5px;line-height:1.7;color:rgba(242,237,247,.82)}
-.shareBar{display:flex;gap:10px;margin-top:18px}
-.shareBtn{flex:1;padding:15px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
-.shareBtn.primary{border:0;background:linear-gradient(105deg,var(--accent),var(--accent2));color:#1a1124}
-.shareBtn:active{transform:scale(.97)}
-.copyToast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(20px);background:rgba(30,22,42,.95);border:1px solid var(--line);color:var(--ink);font-size:12px;padding:12px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:.35s;z-index:50;backdrop-filter:blur(10px)}
-.copyToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.disclaimer{font-size:10.5px;color:rgba(255,255,255,.28);line-height:1.7;text-align:center;margin-top:22px;padding:0 8px}
-#confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:40}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.res-hero{text-align:center;margin-bottom:30px}
+.res-badge{
+  display:inline-block;font-size:11px;letter-spacing:.22em;font-weight:700;color:var(--pink-600);
+  background:var(--pink-100);padding:6px 16px;border-radius:99px;margin-bottom:22px;
+}
+.avatar-box{
+  width:200px;height:200px;margin:0 auto 18px;position:relative;
+  animation:floaty 4.5s ease-in-out infinite;
+}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.avatar-box::after{
+  content:'';position:absolute;inset:-18px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(255,179,206,.55),transparent 66%);filter:blur(12px);
+}
+.avatar-box svg{width:100%;height:100%;display:block}
+.res-name{font-size:40px;font-weight:800;letter-spacing:-.03em;margin:0 0 6px}
+.res-en{font-size:11.5px;letter-spacing:.28em;color:var(--muted);font-weight:700;margin:0 0 14px}
+.res-tagline{font-size:14.5px;color:var(--ink-2);line-height:1.85;margin:0;font-weight:500}
+
+.res-card{
+  background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:24px;
+  padding:24px 22px;margin-bottom:14px;box-shadow:0 18px 44px -32px rgba(226,63,126,.8);
+  opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .65s cubic-bezier(.22,1,.36,1);
+}
+.res-card.show{opacity:1;transform:none}
+.res-card h3{
+  font-size:15px;font-weight:800;margin:0 0 14px;letter-spacing:.01em;
+  display:flex;align-items:center;gap:8px;
+}
+.res-card h3::before{content:'';width:4px;height:15px;border-radius:99px;background:linear-gradient(180deg,#FFB3CE,#F9629B)}
+.res-card p{font-size:14px;line-height:2;color:var(--ink-2);margin:0 0 12px}
+.res-card p:last-child{margin-bottom:0}
+.res-card ul,.res-card ol{margin:0;padding-left:0;list-style:none}
+.res-card li{
+  font-size:13.5px;line-height:1.9;color:var(--ink-2);position:relative;
+  padding-left:24px;margin-bottom:12px;
+}
+.res-card li:last-child{margin-bottom:0}
+.res-card ul li::before{
+  content:'♥';position:absolute;left:2px;top:0;color:var(--pink-400);font-size:11px;
+}
+.res-card ol{counter-reset:n}
+.res-card ol li{counter-increment:n;padding-left:30px}
+.res-card ol li::before{
+  content:counter(n);position:absolute;left:0;top:4px;width:19px;height:19px;border-radius:50%;
+  background:var(--pink-100);color:var(--pink-600);font-size:11px;font-weight:800;
+  display:grid;place-items:center;
+}
+.res-card.accent{
+  background:linear-gradient(160deg,#FFF7FA,#FFE9F1);
+  border-color:var(--pink-200);
+}
+
+/* 分数条 */
+.scores{margin-bottom:14px}
+.score-row{margin-bottom:16px}
+.score-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:12.5px;font-weight:700;color:var(--ink-2);letter-spacing:.04em}
+.score-head b{font-size:17px;color:var(--pink-600);font-weight:800}
+.score-bar{height:8px;border-radius:99px;background:var(--pink-100);overflow:hidden}
+.score-bar i{
+  display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#FFD3E3,#FF8AB5 55%,#F9629B);
+  transition:width 1.2s cubic-bezier(.22,1,.36,1);
+}
+.score-note{font-size:12px;line-height:1.9;color:var(--muted);margin:16px 0 0}
+
+.res-foot{text-align:center;padding:26px 0 10px}
+.res-foot .btn{width:100%;max-width:300px;margin:0 auto 16px;display:flex}
+.disclaimer{font-size:10.5px;color:#B9ABBD;line-height:1.8;margin:18px 0 0;letter-spacing:.02em}
+
+.burst{position:fixed;pointer-events:none;color:#F9629B;z-index:999;transform:translate(-50%,-50%);animation:burstOut .85s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes burstOut{to{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(.15) rotate(var(--rot));opacity:0}}
 </style>
 </head>
 <body>
-<canvas id="confettiCanvas"></canvas>
+<canvas id="fx"></canvas>
+
 <div id="app">
 
-  <!-- 封面 -->
-  <section class="screen active cover" id="screenCover">
-    <div class="badge"><i></i> 恋人类型图鉴 · 第 3 版</div>
-    <h1 class="h1">你在爱里，<br>是哪一种<em>恋人</em>？</h1>
-    <p class="sub">50 道情境题，拆解你的亲密需求、安全感、情绪表达与内耗模式。男生与女生使用不同题库，每次抽题不重复。</p>
-    <div class="glass coverCard">
-      <div class="row"><span>题目数量</span><span>50 题 · 约 6—8 分钟</span></div>
-      <div class="row"><span>理论框架</span><span>成人依恋双轴 + 内耗行为维度</span></div>
-      <div class="row"><span>输出内容</span><span>类型 · 卡通画像 · 雷达图 · 相处建议</span></div>
-    </div>
-    <p class="genderTitle">选择你的性别，题目会为你的视角单独适配</p>
-    <div class="genderGrid">
-      <button class="genderBtn" data-gender="male">男生<small>以“你”为男友视角</small></button>
-      <button class="genderBtn" data-gender="female">女生<small>以“你”为女友视角</small></button>
-    </div>
-    <button class="startBtn" id="startBtn" disabled>开始测试</button>
-    <p class="footNote">结果仅供自我观察与娱乐参考，不构成心理诊断。<br>所有数据仅在本地计算，不上传、不保存。</p>
-  </section>
-
-  <!-- 答题 -->
-  <section class="screen" id="screenTest">
-    <div class="testTop">
-      <div class="ringWrap">
-        <svg width="52" height="52" viewBox="0 0 52 52">
-          <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4b8ff"/><stop offset="1" stop-color="#ffb8d9"/></linearGradient></defs>
-          <circle class="ringBg" cx="26" cy="26" r="22"/>
-          <circle class="ringFg" id="ringFg" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
-        </svg>
-        <div class="ringNum" id="ringNum">0%</div>
+  <!-- ============ 封面 ============ -->
+  <section class="screen is-active" id="sIntro">
+    <div class="wrap">
+      <div class="brand"><span class="dot"></span>ATTACHMENT TYPE · 依恋类型测评</div>
+      <h1 class="hero-title">你是<br><em class="grad">哪一种</em>恋人？</h1>
+      <p class="hero-sub">基于成人依恋理论的四型模型，50 道深度题目，<br>看清你在爱里靠近与退后的方式。</p>
+      <div class="feature-row">
+        <div class="feat"><b>50</b><span>深度题目</span></div>
+        <div class="feat"><b>2</b><span>核心维度</span></div>
+        <div class="feat"><b>4</b><span>依恋类型</span></div>
       </div>
-      <div class="testMeta">
-        <div class="qIndex" id="qIndex">QUESTION 01 / 50</div>
-        <div class="qDim" id="qDim">亲密需求</div>
+      <button class="btn btn-primary" id="btnStart">开始测评</button>
+      <p class="tip">约 6 分钟 · 请凭第一直觉作答</p>
+    </div>
+  </section>
+
+  <!-- ============ 性别 ============ -->
+  <section class="screen" id="sGender">
+    <div class="wrap">
+      <p class="step-tag">STEP 01 / 02 · 基础信息</p>
+      <h2 class="h2">先告诉我，你的性别</h2>
+      <p class="sub">男女题库独立编写，题目情境与表达各不相同，只为更贴近你的真实体验。</p>
+      <div class="gender-grid">
+        <button class="g-card" data-gender="male">
+          <span class="ring"></span>
+          <svg class="g-icon" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="30" fill="#FFF0F6"/>
+            <circle cx="32" cy="24" r="9.5" stroke="#F9629B" stroke-width="2.6"/>
+            <path d="M15 52c2.4-9.4 8.8-14 17-14s14.6 4.6 17 14" stroke="#F9629B" stroke-width="2.6" stroke-linecap="round"/>
+          </svg>
+          <span class="g-name">男生</span>
+          <span class="g-desc">使用男性情境题库</span>
+        </button>
+        <button class="g-card" data-gender="female">
+          <span class="ring"></span>
+          <svg class="g-icon" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="30" fill="#FFF0F6"/>
+            <circle cx="32" cy="24" r="9.5" stroke="#F9629B" stroke-width="2.6"/>
+            <path d="M15 52c2.4-9.4 8.8-14 17-14s14.6 4.6 17 14" stroke="#F9629B" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M38 12c3-4 8-3 8 1 0 3-4 6-8 9-4-3-8-6-8-9 0-4 5-5 8-1z" fill="#FF8AB5"/>
+          </svg>
+          <span class="g-name">女生</span>
+          <span class="g-desc">使用女性情境题库</span>
+        </button>
       </div>
-      <button class="quitBtn" id="quitBtn">退出</button>
-    </div>
-    <div class="barTrack"><div class="barFill" id="barFill"></div></div>
-    <div class="question" id="questionText"></div>
-    <div class="options" id="optionsBox"></div>
-    <button class="backBtn" id="backBtn" disabled>← 上一题</button>
-  </section>
-
-  <!-- 计算中 -->
-  <section class="screen" id="screenCalc">
-    <div class="calc">
-      <div class="calcOrb"></div>
-      <div class="calcTxt" id="calcTxt">正在读取你的亲密模式…</div>
-      <div class="calcStep" id="calcStep">DIMENSION 01 / 04</div>
+      <p class="tip">结果类型与性别无关，仅影响题面表达方式</p>
     </div>
   </section>
 
-  <!-- 结果 -->
-  <section class="screen" id="screenResult">
-    <div class="resultHero">
-      <span class="tag">YOUR LOVE ARCHETYPE</span>
-      <div class="avatarBox" id="avatarBox"></div>
-      <div class="typeName" id="typeName"></div>
-      <div class="typeEn" id="typeEn"></div>
-      <div class="typeLine" id="typeLine"></div>
+  <!-- ============ 答题 ============ -->
+  <section class="screen" id="sQuiz">
+    <div class="quiz-shell">
+      <header class="quiz-head">
+        <div class="head-row">
+          <span class="qidx"><b id="curNum">01</b> <i>/ 50</i></span>
+          <span class="pct" id="pctText">0%</span>
+        </div>
+        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      </header>
+      <div class="q-card in" id="qCard">
+        <div class="q-tag" id="qTag">亲密感受</div>
+        <h3 class="q-text" id="qText"></h3>
+        <div class="opts" id="opts"></div>
+      </div>
+      <p class="hint" id="quizHint">没有对错，只有像不像你。</p>
     </div>
+  </section>
 
-    <div class="glass resultCard">
-      <h3>四维倾向</h3>
-      <div class="dimList" id="dimList"></div>
-      <div class="radarBox"><canvas id="radar" width="280" height="240"></canvas></div>
+  <!-- ============ 加载 ============ -->
+  <section class="screen" id="sLoading">
+    <div class="loading-wrap">
+      <div class="pulse-heart">❤</div>
+      <p class="loading-text" id="loadingText">正在解析你的依恋图谱…</p>
+      <div class="load-bar"><i id="loadFill"></i></div>
     </div>
+  </section>
 
-    <div class="glass resultCard">
-      <h3>你在关系里的真实样子</h3>
-      <div id="analysisBox"></div>
-    </div>
-
-    <div class="glass resultCard">
-      <h3>适配与雷区</h3>
-      <div class="matchGrid" id="matchGrid"></div>
-    </div>
-
-    <div class="glass resultCard">
-      <h3>给你的恋爱建议</h3>
-      <div class="adviceList" id="adviceList"></div>
-    </div>
-
-    <div class="shareBar">
-      <button class="shareBtn primary" id="copyBtn">复制结果文案</button>
-      <button class="shareBtn" id="retakeBtn">重新测一次</button>
-    </div>
-    <p class="disclaimer">本测试基于成人依恋理论与关系内耗行为研究编制，仅供自我觉察与娱乐参考，不替代专业心理咨询或诊断。</p>
+  <!-- ============ 结果 ============ -->
+  <section class="screen" id="sResult">
+    <div id="resultRoot"></div>
   </section>
 
 </div>
-<div class="copyToast" id="copyToast">已复制</div>
 
 <script>
-/* ============================================================
-   恋人类型图鉴 · 单文件引擎
-   ============================================================ */
+/* =========================================================
+   题库：男女各 30 题 × 2 维度，每次随机抽取 25+25 = 50 题
+   a = 依恋焦虑维度   v = 依恋回避维度
+   ========================================================= */
+const BANK = {
+  male: {
+    a: [
+      '她回消息慢了，我会不停点开对话框，猜她是不是不想理我。',
+      '她和别的男生聊得开心，我心里会发紧，忍不住想打听。',
+      '我常担心她并没有像我这样在意她。',
+      '她一句语气冷一点的话，能让我胡思乱想一整天。',
+      '我会反复翻看我们的聊天记录，确认她是不是在变冷淡。',
+      '吵架后如果她不主动找我，我会整夜睡不着。',
+      '我需要她经常说「我在乎你」，才觉得安心。',
+      '她一忙起来少联系我，我就会怀疑自己是不是不重要了。',
+      '我害怕被丢下，所以会格外用力地对她好。',
+      '她说「我们先冷静一下」，我会立刻慌。',
+      '为了留住她，我常常把真实想法咽回去。',
+      '我总觉得这段关系里，我付出的比她多。',
+      '她朋友圈没有提到我，我会有点失落。',
+      '她出差或旅行，我会频繁发消息确认她的状态。',
+      '我会担心她心里还装着前任。',
+      '她拒绝我的邀约，我会觉得被否定的是我整个人。',
+      '我希望随时知道她在哪、和谁在一起。',
+      '一件小事就能让我联想到「她要离开我」。',
+      '我常在她面前表现得比实际更需要陪伴。',
+      '她说「我最近有点累」，我会紧张很久。',
+      '我怕自己不够好，会被更优秀的人取代。',
+      '她情绪不好时，我第一反应是「是不是我做错了」。',
+      '我很难一个人待着，总想和她黏在一起。',
+      '我会去看她点赞了谁、关注了谁。',
+      '我很在意她朋友和家人对我的看法。',
+      '她夸别人一句，我会记很久。',
+      '我常先低头认错，即使不是我的问题。',
+      '我总想尽快确认我们到底算什么关系。',
+      '她说需要空间时，我很难真的给。',
+      '我会在心里预演她离开我的画面。'
+    ],
+    v: [
+      '她情绪激动时，我第一反应是想躲开。',
+      '我习惯把心事憋着，不太跟她说。',
+      '关系太黏，会让我有点喘不过气。',
+      '我更喜欢各自有空间，不太想报备行程。',
+      '她说「我们聊聊」，我会心里一紧想逃。',
+      '我很少主动说「我想你」「我爱你」。',
+      '有矛盾时我倾向冷战，等它自己过去。',
+      '我不太愿意在她面前示弱或掉眼泪。',
+      '我担心太依赖一个人，会让我失去自由。',
+      '她想要更多陪伴时，我会觉得被绑住。',
+      '我常常觉得一个人过也挺自在。',
+      '我很少主动讲我一天发生了什么。',
+      '太亲密的接触，有时候会让我不自在。',
+      '我更愿意用做事表达关心，而不是说出来。',
+      '别人太依赖我，我会想往后退一步。',
+      '我不喜欢她翻我手机或问太多细节。',
+      '关系结束后，我反而会松一口气。',
+      '我很难完全信任一个人。',
+      '我常觉得「说了也没用」。',
+      '遇到问题，我习惯先自己扛。',
+      '我不太愿意在朋友圈公开恋情。',
+      '她哭的时候，我会手足无措想离开现场。',
+      '我习惯把感情排在事业和朋友之后。',
+      '我会给自己留一些「退路」。',
+      '我不想让任何人看到我脆弱的样子。',
+      '关系变得很顺的时候，我反而会莫名烦躁。',
+      '我对「承诺」这两个字有点抗拒。',
+      '我不太喜欢把未来规划得太具体。',
+      '她越黏我，我越想躲远一点。',
+      '我很少主动联系，除非有具体的事。'
+    ]
+  },
+  female: {
+    a: [
+      '他回消息慢了，我会反复点开对话框，猜他是不是不在意我了。',
+      '他和别的女生互动，我会心里发慌，忍不住多问几句。',
+      '我常担心他爱我没有我爱他多。',
+      '他语气稍微冷一点，我能难过一整天。',
+      '我会一遍遍翻聊天记录，找他要变心的证据。',
+      '吵架后他不来找我，我会哭到半夜。',
+      '我需要他经常表达爱意，才觉得踏实。',
+      '他忙起来不回我，我会觉得自己不重要。',
+      '我害怕被抛下，所以会格外用力地对他好。',
+      '他说「我们先冷静一下」，我会立刻慌。',
+      '为了不失去他，我常把委屈咽回去。',
+      '我总觉得这段关系里我付出更多。',
+      '他朋友圈没有我，我会暗自难过。',
+      '他出差，我会不停发消息确认他在干嘛。',
+      '我会担心他心里还有前任。',
+      '他拒绝我的邀约，我会觉得整个人被否定了。',
+      '我希望能随时知道他在哪、和谁在一起。',
+      '一件小事就能让我联想到「他要走了」。',
+      '我会在他面前表现得比实际更需要陪伴。',
+      '他说「我最近很累」，我会立刻紧张。',
+      '我怕自己不够好，会被别人取代。',
+      '他心情不好，我第一反应是「是不是我惹的」。',
+      '我不太能一个人待着，总想和他待在一起。',
+      '我会去看他点赞了谁、关注了谁。',
+      '我很在意他朋友和家人对我的看法。',
+      '他夸别的女生一句，我会记很久。',
+      '我常先低头认错，哪怕不是我的问题。',
+      '我总想尽快确认我们到底算什么关系。',
+      '他说要空间时，我很难忍住不找他。',
+      '我会在心里预演他离开我的画面。'
+    ],
+    v: [
+      '他情绪上头时，我的第一反应是想避开。',
+      '我习惯自己消化情绪，不太跟他说。',
+      '关系太黏会让我觉得有压力。',
+      '我喜欢各自有各自的空间，不太想报备。',
+      '他说「我们谈谈」，我会心里一紧想逃。',
+      '我很少主动说「我想你」。',
+      '有矛盾时我倾向冷处理，等它自己淡。',
+      '我不太愿意在他面前哭。',
+      '我担心太依赖一个人会失去自己。',
+      '他想要更多陪伴时，我会觉得被绑住。',
+      '我常常觉得一个人过也挺自在。',
+      '我很少主动讲我的一天。',
+      '太亲密的接触有时会让我不自在。',
+      '我更习惯用行动关心，而不是说出来。',
+      '别人太依赖我，我会想往后退。',
+      '我不喜欢被问太多行踪细节。',
+      '关系结束后我反而会松一口气。',
+      '我很难完全相信一个人。',
+      '我常觉得「说了他也不懂」。',
+      '遇到问题我先自己扛着。',
+      '我不太愿意公开恋情。',
+      '他哭的时候，我会手足无措想离开。',
+      '我习惯把感情排在事业和朋友之后。',
+      '我会给自己留一些退路。',
+      '我不想让任何人看到我脆弱的样子。',
+      '关系变得很顺利时，我反而会莫名烦躁。',
+      '我对「以后」「承诺」这类词有点抗拒。',
+      '我不喜欢把未来规划得太具体。',
+      '他越黏我，我越想躲远一点。',
+      '我很少主动联系，除非有事。'
+    ]
+  }
+};
 
-/* ---------- 类型定义 ---------- */
+const OPTIONS = ['完全不符合','比较不符合','说不清','比较符合','完全符合'];
+
+/* =========================================================
+   四种类型结果数据
+   ========================================================= */
 const TYPES = {
   secure: {
-    name: "安全锚定型", en: "THE SAFE ANCHOR",
-    line: "你不需要用拉扯来确认被爱，也不把独立当成铠甲。",
-    color: "#8fd9c8",
-    dims: { anxiety: 22, avoidance: 20, please: 25, rumination: 18 },
-    analysis: [
-      "你的核心优势是<strong>情绪可得性与边界感同时在线</strong>。你能在对方需要时靠近，也能在自己需要空间时不带愧疚地离开。冲突发生时，你更倾向于“把问题摊开”而不是“把情绪憋回去”或“用消失来惩罚对方”。",
-      "你并不回避依赖，但你的依赖是<strong>有弹性的</strong>——你不会因为一条消息没回就推翻整段关系，也不会因为一次争吵就觉得一切完了。这种稳定感会让你在关系里成为那个“让人安心的人”。",
-      "需要留意的是：安全型的人有时会<strong>低估对方的脆弱</strong>。你觉得“这有什么好焦虑的”，但对焦虑型伴侣来说，你的平静可能被读成“你不在乎”。"
+    key:'secure', name:'安全型', en:'SECURE', alias:'稳定港湾型恋人',
+    tagline:'「我可以很爱你，也可以好好做自己。」',
+    analysis:[
+      '你在亲密关系里拥有一份相对稳定的内在安全感。你相信自己值得被爱，也相信伴侣在需要时会回应你。这让你既能自然地靠近对方、说出需要，也能在对方忙碌或想要空间时，不把「暂时的疏远」直接解读成「抛弃的信号」。',
+      '面对冲突，你更倾向于把事情说清楚，而不是用冷战、试探或过度讨好来处理。你能承受关系中的不确定，也允许自己和对方都是不完美的人。',
+      '你的依恋系统是「低焦虑 + 低回避」的组合：既不会因为害怕失去而过度黏附，也不会因为害怕受伤而把心门关死。这是四种类型中，关系满意度和稳定性最高的一种。'
     ],
-    good: ["安全型 · 稳定共振", "焦虑型 · 你能稳住对方"],
-    bad: ["高回避型 · 你的靠近会被读成压力", "控制型 · 你的边界会被反复测试"],
-    advice: [
-      "在对方焦虑时，先给一句“我在，只是刚才在忙”，再讲道理。顺序比内容更重要。",
-      "不要因为自己稳定，就默认对方也应该稳定。把“你为什么想这么多”换成“你具体在担心什么”。",
-      "保留你独处充电的习惯，但提前告知对方“我需要两小时安静，不是退出关系”。"
-    ]
+    traits:[
+      '能直接说出「我需要你」，而不觉得羞耻',
+      '对方没回消息时，你会想「他大概在忙」，而不是立刻慌乱',
+      '吵架后愿意主动沟通，也接受「暂时谈不拢」',
+      '既能享受两个人的亲密，也能享受一个人的时间'
+    ],
+    advice:[
+      '别把「稳定」当成「不用经营」。安全型也会倦怠，定期做一次关系体检：最近什么让你开心？什么让你有点憋着？',
+      '当伴侣是不安全型时，你会是那个「稳定器」。但别把自己变成情绪垃圾桶，温柔而坚定地设边界。',
+      '保留自己的世界：朋友、爱好、事业。安全感不是对方给的，是你自己活出来的。',
+      '练习更精确的表达。「我没事」其实有事的次数，越少越好。',
+      '允许自己偶尔不成熟。安全型不是永远理性，而是崩了之后能回来。'
+    ],
+    partner:'你和大多数类型都能相处。与安全型最容易进入良性循环；与焦虑型、回避型相处时，你的稳定本身就是最好的疗愈——但记得，你不是来拯救谁的。',
+    grow:'从「我能照顾好自己」，走向「我也允许别人来照顾我」。'
   },
   anxious: {
-    name: "信号捕手型", en: "THE SIGNAL CATCHER",
-    line: "你爱得很用力，因为你太早学会了从细微变化里预测失去。",
-    color: "#ffb8d9",
-    dims: { anxiety: 82, avoidance: 22, please: 55, rumination: 78 },
-    analysis: [
-      "你对关系中的<strong>信号变化高度敏感</strong>：回复变短、语气变淡、晚安消失，在你这里很少只是“他今天累了”，而更可能被自动翻译成“关系在降温”。这不是你“作”，而是一套很早就形成的预警系统。",
-      "你的爱浓度很高，愿意投入、愿意表达、愿意为对方调整。但问题在于，<strong>你用来确认安全的方式，有时恰好会把对方推远</strong>：追问、试探、反复要承诺，短期内缓解了你的焦虑，长期却消耗了关系的松弛感。",
-      "你的内耗往往不在“对方做了什么”，而在<strong>你脑内预演的剧本</strong>。你需要的不是更多保证，而是一套能让自己从“灾难化想象”里落地的工具。"
+    key:'anxious', name:'焦虑型', en:'ANXIOUS', alias:'痴迷型恋人',
+    tagline:'「我那么怕失去你，是因为我太在乎了。」',
+    analysis:[
+      '你的依恋系统常常处在「高唤醒」状态：对方一个语气的变化、一条迟迟不回的消息，都可能被你迅速解读为「关系出问题了」。这不是你矫情，而是你的警报器天生更灵敏。',
+      '你渴望深度融合的关系，希望两个人之间没有缝隙。这份热烈非常珍贵，但当它变成「必须随时确认」时，你会很累，对方也会有压力。',
+      '你常用「过度激活」的策略来维持连接：主动、付出、试探、追问、先道歉。表面上你在争取爱，实际上你在争取一个「我不会被丢下」的保证——而这个保证，最终只有你自己能给自己。'
     ],
-    good: ["安全型 · 稳定器", "高表达型 · 接得住你的情绪"],
-    bad: ["疏离回避型 · 你越追他越退", "恐惧回避型 · 互相拉扯的循环"],
-    advice: [
-      "焦虑上来时，先做一次“事实核查”：他具体做了什么/没做什么？把事实和你的解释分开写下来。",
-      "把“你是不是不爱我了”换成“你今天回消息比平时少，我有点不安，能告诉我你在忙什么吗”。",
-      "建立一个不依赖伴侣的稳定支点：朋友、运动、创作、咨询都可以。安全感需要多条腿。"
-    ]
+    traits:[
+      '反复看手机，等一条消息',
+      '会为对方一句无心的话难过很久',
+      '常常先道歉，即使不是你的错',
+      '明明很需要，嘴上却说「没事你去忙吧」'
+    ],
+    advice:[
+      '延迟反应 10 分钟。当「他是不是不爱我了」的恐慌涌上来，先不行动，把想法写下来，10 分钟后再决定要不要发那条消息。',
+      '把「试探」换成「直说」。「你怎么都不理我」换成「我今天有点想你，能不能聊五分钟」。直接表达需求，比试探更容易被接住。',
+      '建立属于你自己的安抚清单：运动、朋友、喜欢的剧、写日记。让「情绪急救」不要全压在伴侣身上。',
+      '停止查手机、翻点赞。你查到的东西很少能真正让你安心，只会喂大焦虑。',
+      '记住：他没有秒回，不等于他不爱你；他需要独处，不等于他要离开你。'
+    ],
+    partner:'与安全型最互补，你的热烈能被稳稳接住；与回避型容易陷入「你追我逃」的循环，需要双方都刻意练习。',
+    grow:'把「你会离开我吗」的恐惧，慢慢换成「就算有人离开，我也还在」。'
   },
   avoidant: {
-    name: "静默撤退型", en: "THE SILENT RETREATER",
-    line: "你不是不需要爱，你只是更早学会了在受伤之前先退后。",
-    color: "#a9c4f5",
-    dims: { anxiety: 28, avoidance: 84, please: 30, rumination: 48 },
-    analysis: [
-      "你的独立不是表演，是<strong>真实的生存策略</strong>。你习惯自己消化情绪，对“被需要”保持警惕，因为过去经验告诉你：靠得太近，迟早会失望或失控。",
-      "在关系里，你的第一反应往往是<strong>拉开距离</strong>：需要空间、不想解释、觉得“说了也没用”。对方越追问，你越沉默；你越沉默，对方越焦虑。这个循环里没有坏人，但两个人都很累。",
-      "你的回避底下通常不是冷漠，而是<strong>高浓度的不安被压进了安静里</strong>。你真正需要的，是学会在撤退之前给出一个“我还在”的信号。"
+    key:'avoidant', name:'回避型', en:'AVOIDANT', alias:'疏离型恋人',
+    tagline:'「不是不在乎，是我怕靠太近会失控。」',
+    analysis:[
+      '你非常看重独立和自我空间。当关系变得黏稠、当有人要求更多陪伴和情绪回应时，你的第一反应往往是后退——不是因为你冷漠，而是亲密本身会让你感到不安全、失去掌控。',
+      '你习惯用「去激活」策略处理依恋需求：把情绪压下去，把注意力转移到工作、爱好、独处上，告诉自己「我一个人也很好」。这在短期内很有效，长期却会让伴侣感到被推开。',
+      '你更擅长用行动而不是语言表达爱。你可能默默把事做好，却很难说出「我想你」和「对不起」。'
     ],
-    good: ["安全型 · 不逼迫的稳定", "低需求型 · 节奏匹配"],
-    bad: ["焦虑型 · 追逃循环", "高表达型 · 你的沉默会被读成拒绝"],
-    advice: [
-      "撤退前先说一句模板：“我需要一点时间消化，不是不在乎你，晚上我们再聊。”这句话能挡住 80% 的误读。",
-      "练习一次“小额暴露”：分享一件今天让你有情绪的小事，不用解释原因，只描述感受。",
-      "不要把“独立”当成唯一的安全来源。允许自己在低风险的人面前练习依赖。"
-    ]
+    traits:[
+      '对方情绪上头时，你想先离开现场',
+      '很难说出「我需要你」这四个字',
+      '关系变好时，反而会莫名烦躁',
+      '常用「忙」作为保持距离的安全借口'
+    ],
+    advice:[
+      '把「想逃」当成一个信号，而不是一道命令。想逃的时候，试着多留 3 分钟，说一句「我现在有点乱，需要缓一下，晚点我们再聊」——离开可以，但要留一句话。',
+      '练习小剂量的暴露。每天说一句真实的感受，哪怕只是「今天有点累」。亲密是练出来的，不是天生的。',
+      '分清「我需要空间」和「我在惩罚你」。冷战是最伤人的回避，明确说出需要，比消失要温柔得多。',
+      '允许自己在一个人面前不完美。被看见脆弱，不会让你失去控制，反而会让你第一次感到被真正接住。',
+      '如果发现自己总在关系变好时想抽身，问问自己：我是在保护自己，还是在重复某个熟悉的剧本？'
+    ],
+    partner:'与安全型相处最容易被「慢慢焐热」；与焦虑型要格外小心「追逃循环」，需要提前约定好「我需要空间时怎么说」。',
+    grow:'从「我一个人也可以」，走到「我可以一个人，但我选择和你在一起」。'
   },
   fearful: {
-    name: "靠近又退后型", en: "THE PUSH-PULL",
-    line: "你既渴望被接住，又害怕接住你的那双手会松开。",
-    color: "#c9a7ff",
-    dims: { anxiety: 78, avoidance: 76, please: 45, rumination: 82 },
-    analysis: [
-      "你是依恋类型里<strong>张力最大的一组</strong>：高焦虑 + 高回避同时存在。你会在靠近时突然想逃，在对方真的退开时又强烈地想要拉回来。这不是善变，而是“想要”和“怕要”在同时工作。",
-      "你的人际雷达非常灵敏，能读到别人忽略的细微信号。但这份灵敏也让你容易<strong>在关系还没有真正变坏之前，就先为最坏的情况做准备</strong>。有时候你会先推开对方，只是为了不做那个被留下的人。",
-      "你的核心议题不是“爱不爱”，而是<strong>“我能不能在一个人面前安全地脆弱”</strong>。这需要时间，也需要对方有足够的稳定度。"
+    key:'fearful', name:'混乱型', en:'FEARFUL', alias:'恐惧型恋人',
+    tagline:'「我想要靠近你，又害怕靠近你。」',
+    analysis:[
+      '你同时拥有高焦虑和高回避两套系统：既渴望被深深地爱，又害怕一旦真的靠近就会被伤害。所以你常常在「拼命靠近」和「突然抽离」之间来回摆动。',
+      '对方热情时你会想逃，对方冷淡时你又恐慌。这种矛盾让你自己也很累，甚至怀疑「我是不是不适合谈恋爱」。',
+      '这通常和早期不稳定的亲密经验有关——你学到的是「爱是不安全的，但我也离不开它」。请记住：这不是你的错，也不是无法改变的命运。'
     ],
-    good: ["安全型 · 高稳定、低逼迫", "耐心型 · 允许你慢慢来"],
-    bad: ["焦虑型 · 互相引爆", "疏离回避型 · 两个人都退，关系自然冷却"],
-    advice: [
-      "当你感到“想消失”的冲动时，先标记它：“这是恐惧在说话，不是事实。”然后做一个小到不可能失败的动作：回一个字、发一个表情。",
-      "把“我要不要分手”替换成“我现在具体在害怕什么”。恐惧型的分手冲动常常是防御，不是决定。",
-      "优先选择情绪稳定的伴侣，而不是让你心跳最快的那一个。对你来说，可预测性比刺激更珍贵。"
-    ]
-  },
-  pleaser: {
-    name: "过度给予型", en: "THE OVER-GIVER",
-    line: "你太擅长照顾别人的感受，以至于自己的需求总是排在最后。",
-    color: "#f5d48a",
-    dims: { anxiety: 58, avoidance: 30, please: 86, rumination: 62 },
-    analysis: [
-      "你在关系里的默认设置是<strong>“先让对方满意”</strong>。你能敏锐地察觉对方想要什么，并提前做到。这让你在初期非常有吸引力，但也埋下了一个风险：对方爱上的可能是你的“功能”，而不是你的“人”。",
-      "你的付出往往不是交换，而是一种<strong>获取安全的方式</strong>：“只要我还有用、还体贴、还不添麻烦，他就不会离开。”当付出没有被看见时，你不会直接表达失望，而是先怀疑自己是不是做得不够。",
-      "长期过度给予会积累隐性委屈。你嘴上说“没事”，身体和情绪却在记账。迟早会以冷淡、爆发或彻底撤退的形式结算。"
+    traits:[
+      '一会儿想黏着对方，一会儿又想拉黑对方',
+      '情绪起伏大，自己也说不清为什么',
+      '很难完全信任，又极度渴望被爱',
+      '常在关系稳定时，亲手制造一场危机'
     ],
-    good: ["安全型 · 会接住并回馈", "高觉察型 · 看得见你的付出"],
-    bad: ["索取型 · 你的给会被当成理所当然", "低表达型 · 你的委屈永远不被发现"],
-    advice: [
-      "每周练习一次“不带解释的拒绝”：“这次不行，我有安排。”不补充理由，不道歉。",
-      "把“他想要什么”和“我想要什么”并排写下来。如果后者连续三次为空，这就是信号。",
-      "告诉伴侣一件你真正需要的事，哪怕很小。健康的爱不是靠你一个人懂事来维持的。"
-    ]
-  },
-  ruminator: {
-    name: "深度反刍型", en: "THE DEEP RUMINATOR",
-    line: "你把关系里每一个细节都反复咀嚼，试图从中找到“我哪里不够好”的证据。",
-    color: "#e0b0ff",
-    dims: { anxiety: 70, avoidance: 42, please: 52, rumination: 90 },
-    analysis: [
-      "你的内耗发生在<strong>事情结束之后</strong>。白天一句普通的对话，晚上会在脑子里重播、拆解、换角度再想一遍。你不是在“想太多”，你是在试图用思考来获得控制感。",
-      "你对关系的理解很深，能看见别人看不见的层次。但反刍的陷阱在于：<strong>它给你一种“我在解决问题”的错觉，实际上只是在重复痛苦</strong>。想得越多，行动越少，焦虑越重。",
-      "你很容易把<strong>对方的行为归因到自己身上</strong>：他今天冷淡，是不是我昨天说错了什么？这种归因习惯会让你承担大量本不属于你的情绪重量。"
+    advice:[
+      '先稳定自己，再谈稳定关系。规律作息、运动、写情绪日记，这些看起来和恋爱无关的事，恰恰是你最需要的「安全地基」。',
+      '给情绪命名。「我现在是害怕被丢下」，而不是「我很生气」。能命名的情绪，才不会被它牵着走。',
+      '和伴侣做一份「触发点说明书」：提前告诉对方，什么情况会让你不安，你希望他怎么回应。把不可预测变成可预测。',
+      '慢慢来。你需要的是「可预测的、一致的、不忽冷忽热」的关系，而不是一场轰轰烈烈。慢，对你来说才是安全。',
+      '如果情绪波动已经影响到生活，认真考虑寻求专业心理咨询。这不是软弱，是最聪明的自我投资。'
     ],
-    good: ["安全型 · 能把你从脑内拉回现实", "行动型 · 用具体动作打断反刍"],
-    bad: ["疏离型 · 沉默会喂养你的想象", "模糊型 · 不给反馈，你会自己写剧本"],
-    advice: [
-      "给反刍设一个“停车位”：每天固定 15 分钟专门想，其他时间出现时写一句“留到停车位”然后放下。",
-      "把脑内循环变成纸面循环：写下“事实 / 我的解释 / 其他可能解释”三栏。你会发现解释不止一个。",
-      "用身体打断头脑：反刍启动时，做 20 个深蹲或出门走 5 分钟。思考停不下来时，先换身体状态。"
-    ]
-  },
-  controller: {
-    name: "秩序掌控型", en: "THE ORDER KEEPER",
-    line: "你需要确定感，而确定感在你这里常常等于“一切都在可预期的轨道上”。",
-    color: "#9fd4c4",
-    dims: { anxiety: 72, avoidance: 38, please: 35, rumination: 58 },
-    analysis: [
-      "你对关系有清晰的期待：怎么沟通、怎么安排时间、什么算“在乎”。这些标准本身不是问题，问题在于<strong>当现实偏离剧本时，你会用“管理”来恢复秩序</strong>——追问行踪、检查细节、试图让对方按你的方式来做。",
-      "你的控制底下通常是<strong>对失控的恐惧</strong>。你不是想当坏人，你只是很难忍受“不知道”。但关系不是项目，过度管理会让对方感到被监视而不是被爱。",
-      "你其实有很强的责任感和执行力，如果把这部分能量从“管对方”转向“建设共同规则”，你会是很有安全感的伴侣。"
-    ],
-    good: ["安全型 · 接得住你的规划欲", "高透明型 · 主动给确定感"],
-    bad: ["回避型 · 你的追问会触发撤退", "自由型 · 节奏冲突明显"],
-    advice: [
-      "把“你在哪、和谁、几点回”换成“今晚大概几点方便聊一下”。前者是监控，后者是邀请。",
-      "区分“我的标准”和“唯一正确的标准”。你的方式有效，但不等于对方的方式就是错的。",
-      "焦虑失控时，先问自己：我现在需要的是信息，还是确定感？如果是后者，信息永远不够。"
-    ]
-  },
-  mixed: {
-    name: "高敏切换型", en: "THE SENSITIVE SWITCH",
-    line: "你的模式不是一种，而是在不同关系、不同阶段里切换。",
-    color: "#d4b8ff",
-    dims: { anxiety: 55, avoidance: 52, please: 48, rumination: 60 },
-    analysis: [
-      "你的得分没有落在某一个极端上，这本身就是一个重要信息：<strong>你的亲密模式对关系环境高度敏感</strong>。在安全的人面前，你可能很稳定；在被忽视或被逼迫的关系里，你可能会迅速切换到焦虑或回避。",
-      "这不代表你没有“真实类型”，而代表你的<strong>可塑性很高</strong>。你更像一面镜子：关系质量好的时候，你能给出很好的回应；关系质量差的时候，你也会启动强烈的保护。",
-      "对你来说，最重要的不是给自己贴一个固定标签，而是识别<strong>“谁、什么场景，会让你变成另一个人”</strong>。这份觉察比类型名更有用。"
-    ],
-    good: ["安全型 · 让你的稳定面被激活", "高觉察型 · 能一起复盘模式"],
-    bad: ["极端回避 · 会把你推向焦虑端", "极端焦虑 · 会把你推向回避端"],
-    advice: [
-      "回顾最近三段关系，分别写下你在其中的主要反应。你会发现模式是有条件的，不是固定的。",
-      "优先经营“让你更像安全型”的关系，而不是试图在消耗型关系里证明自己可以稳定。",
-      "把“我到底是什么型”换成“我在什么条件下会启动哪种保护”。后者才是可操作的。"
-    ]
+    partner:'与安全型、情绪稳定型的人长期相处最有益；避免与同样高波动的类型进入「互相引爆」的关系。',
+    grow:'从「爱是危险的」，走到「这次我可以试着相信一次」。'
   }
 };
 
-/* ---------- 题库 ---------- */
-/* 每题 4 个选项，各自映射到维度分值增量。
-   维度：anxiety 焦虑 / avoidance 回避 / please 讨好 / rumination 内耗反刍
-   每题最多 +3，50 题单维度最高 150，最后归一化为 0—100。 */
-
-function q(text, dim, opts){
-  return { text, dim, opts };
-}
-
-/* 女生题库 */
-const FEMALE_POOL = [
-  q("他超过半天没回你消息，你的第一反应更接近——","安全感",[
-    {t:"先做自己的事，晚上再说",s:{anxiety:0,avoidance:1,please:0,rumination:0}},
-    {t:"反复看手机，猜他是不是冷淡了",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"告诉自己“我也不需要他”，然后也不回",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"先发一条轻松的消息试探一下",s:{anxiety:2,avoidance:0,please:1,rumination:1}}
-  ]),
-  q("你们刚确认关系，他开始频繁说“想你”，你心里更接近——","亲密需求",[
-    {t:"开心，也自然地回应",s:{anxiety:0,avoidance:0,please:1,rumination:0}},
-    {t:"有点甜，但也有点想退一步",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"很想全部接住，又怕自己太投入",s:{anxiety:2,avoidance:1,please:0,rumination:2}},
-    {t:"会想他是不是对谁都这样",s:{anxiety:2,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("吵架时你最常出现的动作是——","冲突模式",[
-    {t:"把问题说清楚，哪怕气氛紧张",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先道歉，把场面稳住再说",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"不想说了，需要离开现场",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"一边说没事，一边在心里反复过细节",s:{anxiety:2,avoidance:1,please:1,rumination:3}}
-  ]),
-  q("你发现他给别的女生朋友圈点了赞，你会——","安全感",[
-    {t:"不太在意，点个赞很正常",s:{anxiety:0,avoidance:1,please:0,rumination:0}},
-    {t:"心里咯噔一下，但不会直接问",s:{anxiety:2,avoidance:0,please:1,rumination:3}},
-    {t:"直接开玩笑问他",s:{anxiety:1,avoidance:0,please:0,rumination:0}},
-    {t:"会记下来，之后找机会观察",s:{anxiety:2,avoidance:0,please:0,rumination:2}}
-  ]),
-  q("他心情不好但说“没事”，你会——","情绪表达",[
-    {t:"相信他，给他空间",s:{anxiety:0,avoidance:1,please:0,rumination:0}},
-    {t:"忍不住一直问，想帮他解决",s:{anxiety:2,avoidance:0,please:2,rumination:1}},
-    {t:"觉得自己被排除在外，有点受伤",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"也收回自己的情绪，不说自己的事",s:{anxiety:1,avoidance:2,please:1,rumination:1}}
-  ]),
-  q("你更害怕哪一种——","核心恐惧",[
-    {t:"被控制、失去自己",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"被抛弃、不被选择",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"不被需要、没有价值",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"选错人、反复内耗",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("他忘记你们的纪念日，你会——","期待与失望",[
-    {t:"直接告诉他你在意这件事",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"嘴上说没关系，心里过不去",s:{anxiety:2,avoidance:1,please:1,rumination:3}},
-    {t:"以后也不再为他准备这些",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"反思是不是自己太计较",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你会在什么时候最想谈恋爱——","亲密动机",[
-    {t:"生活稳定、心情好的时候",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"孤独、低落、需要被接住的时候",s:{anxiety:2,avoidance:0,please:1,rumination:1}},
-    {t:"看到别人甜蜜的时候",s:{anxiety:1,avoidance:0,please:0,rumination:1}},
-    {t:"几乎一直都想，但不太敢开始",s:{anxiety:2,avoidance:2,please:0,rumination:2}}
-  ]),
-  q("他提出想多一些个人空间，你的第一感受是——","空间与距离",[
-    {t:"理解，我也需要",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"不安，觉得他在为离开做准备",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"轻松，正好我也觉得有点黏",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"表面答应，心里开始反复想原因",s:{anxiety:2,avoidance:1,please:1,rumination:3}}
-  ]),
-  q("在关系里，你更容易——","自我位置",[
-    {t:"表达需求，也接受被拒绝",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先满足对方，再考虑自己",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"尽量不麻烦对方，自己的事自己扛",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"反复确认自己有没有做得不够好",s:{anxiety:2,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("他夸你“懂事”，你的真实感受是——","讨好模式",[
-    {t:"当成普通夸奖接受",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"开心，觉得自己被认可了",s:{anxiety:1,avoidance:0,please:3,rumination:0}},
-    {t:"有点不舒服，好像被期待一直懂事",s:{anxiety:1,avoidance:1,please:1,rumination:2}},
-    {t:"无所谓，我不靠这个定义自己",s:{anxiety:0,avoidance:2,please:0,rumination:0}}
-  ]),
-  q("你发现自己开始频繁查看他的在线状态，你会——","反刍与行为",[
-    {t:"注意到就放下，去做别的事",s:{anxiety:0,avoidance:0,please:0,rumination:1}},
-    {t:"继续看，直到自己累为止",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"干脆关掉提示，眼不见为净",s:{anxiety:1,avoidance:2,please:0,rumination:1}},
-    {t:"问自己到底在怕什么",s:{anxiety:1,avoidance:0,please:0,rumination:2}}
-  ]),
-  q("他对你很好，但你总觉得“不真实”，你会——","恐惧亲密",[
-    {t:"享受当下，不预设结局",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"忍不住找“他其实没那么喜欢我”的证据",s:{anxiety:3,avoidance:1,please:0,rumination:3}},
-    {t:"先保持距离，观察久一点",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"加倍对他好，希望留住这种感觉",s:{anxiety:2,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更理想的恋爱节奏是——","关系节奏",[
-    {t:"各自有生活，定期高质量相处",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"高频联系，最好随时知道彼此状态",s:{anxiety:3,avoidance:0,please:1,rumination:1}},
-    {t:"慢热、低频、不要一下子太近",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"看对方节奏，我可以配合",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("分手后你更容易——","分离反应",[
-    {t:"难过一阵，然后继续生活",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复复盘哪里出了问题",s:{anxiety:1,avoidance:0,please:0,rumination:3}},
-    {t:"很快切断联系，不给自己回头",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"忍不住想联系，又忍住",s:{anxiety:3,avoidance:1,please:0,rumination:2}}
-  ]),
-  q("他心情低落时，你更倾向于——","照顾方式",[
-    {t:"问清楚他需要陪伴还是空间",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"放下自己的事去陪他",s:{anxiety:1,avoidance:0,please:3,rumination:0}},
-    {t:"不太擅长处理，先不打扰",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"会担心是不是自己造成的",s:{anxiety:2,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("你更容易被哪种人吸引——","吸引模式",[
-    {t:"情绪稳定、回应及时的人",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"忽冷忽热、让你猜的人",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"独立、不太需要你的人",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"需要你照顾、离不开你的人",s:{anxiety:1,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("当他说“你想太多了”，你会——","被否定时",[
-    {t:"停下来想想他说的有没有道理",s:{anxiety:0,avoidance:0,please:0,rumination:1}},
-    {t:"更委屈，觉得他不理解你",s:{anxiety:3,avoidance:0,please:1,rumination:2}},
-    {t:"不想再说了，收回情绪",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"先道歉，觉得自己确实麻烦",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你对“被需要”的感觉——","价值感来源",[
-    {t:"喜欢，但不是唯一的安全来源",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"非常重要，不被需要会不安",s:{anxiety:2,avoidance:0,please:3,rumination:1}},
-    {t:"有点压力，希望彼此都能自理",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"会主动制造被需要的机会",s:{anxiety:1,avoidance:0,please:2,rumination:1}}
-  ]),
-  q("如果伴侣说“我们谈谈”，你的身体反应更接近——","冲突预警",[
-    {t:"平静，谈就谈",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"心一沉，开始预演最坏结果",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"想回避，能拖就拖",s:{anxiety:1,avoidance:3,please:0,rumination:0}},
-    {t:"先想自己哪里做错了",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你更认同哪句话——","关系信念",[
-    {t:"爱是合作，不是考试",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"爱需要不断证明，否则会消失",s:{anxiety:3,avoidance:0,please:1,rumination:2}},
-    {t:"爱是各自独立，不要太依赖",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"爱是我对你好，你也会对我好",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("你发现自己在关系里越来越沉默，你会——","自我觉察",[
-    {t:"主动开口，哪怕笨拙",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"继续沉默，反正说了也没用",s:{anxiety:1,avoidance:3,please:0,rumination:2}},
-    {t:"更用力地付出，希望被看见",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"反复想自己是不是变了",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("他对你提出一个你不太想答应的请求，你会——","边界",[
-    {t:"直接说不太方便",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"答应，但心里不舒服",s:{anxiety:1,avoidance:0,please:3,rumination:2}},
-    {t:"找借口推掉，避免正面冲突",s:{anxiety:1,avoidance:2,please:1,rumination:0}},
-    {t:"答应后又反复想自己是不是被占了便宜",s:{anxiety:1,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("你觉得自己在恋爱中最容易失去——","自我损耗",[
-    {t:"暂时失去节奏，但能找回来",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"自我，总是围着对方转",s:{anxiety:2,avoidance:0,please:3,rumination:2}},
-    {t:"耐心，很快想抽身",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"情绪稳定，反复内耗",s:{anxiety:2,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("深夜你最容易冒出来的念头是——","夜间反刍",[
-    {t:"明天吃什么",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"他今天那句话到底什么意思",s:{anxiety:2,avoidance:0,please:0,rumination:3}},
-    {t:"一个人也挺好，不想谈了",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"我是不是不够好",s:{anxiety:2,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("你更愿意和伴侣分享——","表达深度",[
-    {t:"开心的事和具体的烦恼",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"所有情绪，包括不安",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"只分享轻松的部分",s:{anxiety:0,avoidance:2,please:0,rumination:1}},
-    {t:"看对方想不想听，我再决定",s:{anxiety:1,avoidance:0,please:2,rumination:1}}
-  ]),
-  q("当关系进入平淡期，你会——","平淡期",[
-    {t:"觉得正常，一起建设日常",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"不安，想制造一点波动来确认爱",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"慢慢冷却，觉得没意思了",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"更努力地对对方好",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更容易在哪种关系里内耗——","内耗场景",[
-    {t:"边界清晰、反馈直接的关系",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"对方忽冷忽热的关系",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"太黏、让你没有空间的关系",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"你付出很多但没被看见的关系",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你希望伴侣怎么对你——","核心需要",[
-    {t:"稳定、尊重、有话直说",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"多确认、多表达、不要消失",s:{anxiety:3,avoidance:0,please:1,rumination:0}},
-    {t:"不要逼太紧，给足空间",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"看见你的付出，也主动回馈",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("他当众开了你一个不太舒服的玩笑，你会——","即时反应",[
-    {t:"事后私下告诉他你的感受",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"当场笑，回去反复想",s:{anxiety:1,avoidance:0,please:2,rumination:3}},
-    {t:"当场冷下来，不想解释",s:{anxiety:1,avoidance:3,please:0,rumination:0}},
-    {t:"跟着笑，怕破坏气氛",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你对“承诺”的态度更接近——","承诺",[
-    {t:"重要，但不需要反复说",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"需要反复听到才安心",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"有点压力，更看重行动",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"会用更多付出去换承诺",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你发现自己又在分析他的每一条消息，你会——","元认知",[
-    {t:"笑一下，去做别的事",s:{anxiety:0,avoidance:0,please:0,rumination:1}},
-    {t:"继续分析，停不下来",s:{anxiety:2,avoidance:0,please:0,rumination:3}},
-    {t:"干脆不回，看他什么反应",s:{anxiety:2,avoidance:2,please:0,rumination:1}},
-    {t:"问朋友“他到底什么意思”",s:{anxiety:2,avoidance:0,please:1,rumination:2}}
-  ]),
-  q("如果伴侣需要你搬去另一个城市，你会——","重大让步",[
-    {t:"一起讨论利弊，再做决定",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"大概率会去，怕拒绝会失去他",s:{anxiety:2,avoidance:0,please:3,rumination:1}},
-    {t:"不太愿意，不想打乱自己",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"会去，但之后反复想值不值得",s:{anxiety:1,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("你更害怕自己变成——","自我形象",[
-    {t:"失控的人",s:{anxiety:0,avoidance:2,please:0,rumination:1}},
-    {t:"被丢下的人",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"没有自我的人",s:{anxiety:0,avoidance:2,please:1,rumination:0}},
-    {t:"想太多、把关系搞砸的人",s:{anxiety:2,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("当你感到不安时，你更常——","调节策略",[
-    {t:"直接表达，寻求回应",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复确认，直到暂时安心",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"自己消化，不让他知道",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"先对他更好，再观察反应",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你觉得“好的爱情”更像——","爱情脚本",[
-    {t:"两个完整的人互相支持",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"永远有回应、永远不冷淡",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"各自精彩，互不牵绊",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"我全心全意对你好",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("他最近工作很忙、回复变少，你会——","压力场景",[
-    {t:"表达理解，同时约一个固定联系时间",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"忍不住频繁发消息确认他还在",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"也不找他了，看他什么时候想起你",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"更体贴，尽量不添麻烦",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你在关系里最常忽略的是——","盲区",[
-    {t:"没有明显忽略",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"自己的边界",s:{anxiety:0,avoidance:0,please:3,rumination:1}},
-    {t:"对方的情感需求",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"自己的情绪出口",s:{anxiety:1,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("你更容易因为什么而提分手——","分手触发",[
-    {t:"原则性问题",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复不安、太累了",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"觉得失去自由",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"付出一直不被看见",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("当你一个人待着时，你更容易——","独处状态",[
-    {t:"放松、充电",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"想他，想联系又怕打扰",s:{anxiety:2,avoidance:0,please:1,rumination:2}},
-    {t:"觉得很自在，不太想被打扰",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"复盘最近的关系细节",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("你更愿意把脆弱展示给——","脆弱暴露",[
-    {t:"信任的伴侣和朋友",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"伴侣，但会担心被嫌弃",s:{anxiety:2,avoidance:0,please:1,rumination:2}},
-    {t:"几乎不展示，自己消化",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"看对方态度，他安全我才展示",s:{anxiety:1,avoidance:1,please:1,rumination:1}}
-  ]),
-  q("他忘了你提过的一件小事，你会——","细节敏感",[
-    {t:"提醒一下，不上升",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"觉得他根本不在意你",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"无所谓，我自己也能做",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"不说，但会记很久",s:{anxiety:2,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("你更倾向于怎么表达爱——","爱的语言",[
-    {t:"直接说，也直接做",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"多做少说，怕说多了显得廉价",s:{anxiety:0,avoidance:1,please:2,rumination:0}},
-    {t:"用行动照顾对方的一切",s:{anxiety:1,avoidance:0,please:3,rumination:0}},
-    {t:"看对方怎么对我，我再决定",s:{anxiety:1,avoidance:1,please:0,rumination:2}}
-  ]),
-  q("你觉得自己在恋爱里的“电量”消耗在——","能量分配",[
-    {t:"正常沟通和磨合",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复猜测和确认",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"应付对方的靠近",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"压抑自己的需求",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("如果伴侣说“你变了”，你第一反应是——","反馈接收",[
-    {t:"问清楚他具体指什么",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"慌张，怕他要离开",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"防御，觉得他不理解你",s:{anxiety:1,avoidance:2,please:0,rumination:1}},
-    {t:"自责，觉得是自己不够好",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你更愿意选择哪一种伴侣——","伴侣选择",[
-    {t:"情绪稳定、言行一致",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"强烈地表达爱你、需要你",s:{anxiety:2,avoidance:0,please:1,rumination:0}},
-    {t:"独立、不黏、给你自由",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"需要你、离不开你",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("你经常在关系里感到——","总体感受",[
-    {t:"大体安心，偶尔波动",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"紧张，像在走钢丝",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"有压力，想逃开一下",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"委屈，但说不出口",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你更认同哪种“爱自己”——","自我关系",[
-    {t:"尊重自己的感受和边界",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先让自己变得更好，才值得被爱",s:{anxiety:1,avoidance:0,please:2,rumination:1}},
-    {t:"不依赖任何人",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"停止反复审判自己",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("当你发现对方在关系里退缩，你会——","追逃反应",[
-    {t:"给他一点时间，同时表达你的位置",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"立刻追问，想把连接抓回来",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"也退，谁怕谁",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"对他更好，希望他回来",s:{anxiety:2,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更害怕哪一种“不被爱”——","恐惧变式",[
-    {t:"被平静地告知不合适",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"被冷暴力、被慢慢疏远",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"被过度依赖、失去自己",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"付出一切后被抛弃",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你觉得自己在关系里更像——","自我意象",[
-    {t:"一个可以商量的人",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"一个随时可能被替换的人",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"一个需要保留出口的人",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"一个不停付出的人",s:{anxiety:0,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("如果现在单身，你更接近——","单身状态",[
-    {t:"享受，也不排斥进入关系",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"很想谈，但怕再次内耗",s:{anxiety:2,avoidance:1,please:0,rumination:2}},
-    {t:"很自在，不太想改变",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"会为了被爱而降低标准",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更愿意把关系里的问题——","问题归因",[
-    {t:"看成双方需要一起调整的事",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先怪自己",s:{anxiety:1,avoidance:0,please:3,rumination:2}},
-    {t:"先抽离，不想面对",s:{anxiety:1,avoidance:3,please:0,rumination:0}},
-    {t:"反复分析，直到想通为止",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("你希望这段测试告诉你——","测试期待",[
-    {t:"我的模式，以及怎么调整",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"我是不是注定谈不好恋爱",s:{anxiety:2,avoidance:0,please:0,rumination:2}},
-    {t:"我是不是适合一个人",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"我为什么总是付出更多",s:{anxiety:0,avoidance:0,please:3,rumination:1}}
-  ])
-];
-
-/* 男生题库（与女生不同措辞与场景，核心维度保持一致） */
-const MALE_POOL = [
-  q("她超过半天没回你消息，你的第一反应更接近——","安全感",[
-    {t:"先忙自己的，晚上再说",s:{anxiety:0,avoidance:1,please:0,rumination:0}},
-    {t:"反复看手机，想她是不是在冷淡你",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"告诉自己“我也不缺人陪”，也不找她",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"发一条轻松的消息试探一下",s:{anxiety:2,avoidance:0,please:1,rumination:1}}
-  ]),
-  q("她开始频繁说“想你”，你心里更接近——","亲密需求",[
-    {t:"开心，也自然回应",s:{anxiety:0,avoidance:0,please:1,rumination:0}},
-    {t:"有点甜，但也想保留自己的节奏",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"很想全部接住，又怕自己不够好",s:{anxiety:2,avoidance:1,please:0,rumination:2}},
-    {t:"会想她是不是对谁都这样",s:{anxiety:2,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("吵架时你最常出现的动作是——","冲突模式",[
-    {t:"把问题说清楚，哪怕气氛紧张",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先认错，把场面稳住再说",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"不想吵了，需要出去待一会儿",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"嘴上说没事，心里反复过细节",s:{anxiety:2,avoidance:1,please:1,rumination:3}}
-  ]),
-  q("你发现她经常和一个异性朋友聊天，你会——","安全感",[
-    {t:"不太在意，正常社交",s:{anxiety:0,avoidance:1,please:0,rumination:0}},
-    {t:"心里不舒服，但不会直接说",s:{anxiety:2,avoidance:0,please:1,rumination:3}},
-    {t:"直接问她，把话说开",s:{anxiety:1,avoidance:0,please:0,rumination:0}},
-    {t:"会记下来，之后观察",s:{anxiety:2,avoidance:0,please:0,rumination:2}}
-  ]),
-  q("她心情不好但说“没事”，你会——","情绪表达",[
-    {t:"相信她，给她空间",s:{anxiety:0,avoidance:1,please:0,rumination:0}},
-    {t:"忍不住一直问，想帮她解决",s:{anxiety:2,avoidance:0,please:1,rumination:1}},
-    {t:"觉得自己被排除在外，有点挫败",s:{anxiety:2,avoidance:0,please:0,rumination:2}},
-    {t:"也收回自己的情绪，不说自己的事",s:{anxiety:1,avoidance:2,please:1,rumination:1}}
-  ]),
-  q("你更害怕哪一种——","核心恐惧",[
-    {t:"被控制、失去自己",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"被抛弃、不被选择",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"不被需要、没有价值",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"选错人、反复内耗",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("她忘记你们的重要约定，你会——","期待与失望",[
-    {t:"直接告诉她你在意",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"嘴上说没事，心里过不去",s:{anxiety:2,avoidance:1,please:1,rumination:3}},
-    {t:"以后也不再主动安排",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"反思是不是自己要求太多",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你会在什么时候最想谈恋爱——","亲密动机",[
-    {t:"生活稳定、心情好的时候",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"孤独、压力大、需要被理解的时候",s:{anxiety:2,avoidance:0,please:1,rumination:1}},
-    {t:"看到别人甜蜜的时候",s:{anxiety:1,avoidance:0,please:0,rumination:1}},
-    {t:"几乎一直都想，但不太敢开始",s:{anxiety:2,avoidance:2,please:0,rumination:2}}
-  ]),
-  q("她提出想多一些个人空间，你的第一感受是——","空间与距离",[
-    {t:"理解，我也需要",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"不安，觉得她在为离开做准备",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"轻松，正好也觉得有点紧",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"表面答应，心里反复想原因",s:{anxiety:2,avoidance:1,please:1,rumination:3}}
-  ]),
-  q("在关系里，你更容易——","自我位置",[
-    {t:"表达需求，也接受被拒绝",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先满足对方，再考虑自己",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"尽量不麻烦对方，自己的事自己扛",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"反复确认自己有没有做得不够好",s:{anxiety:2,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("她夸你“靠谱”，你的真实感受是——","讨好模式",[
-    {t:"当成普通夸奖接受",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"开心，觉得自己被认可了",s:{anxiety:1,avoidance:0,please:3,rumination:0}},
-    {t:"有点压力，好像被期待一直扛着",s:{anxiety:1,avoidance:1,please:1,rumination:2}},
-    {t:"无所谓，我不靠这个定义自己",s:{anxiety:0,avoidance:2,please:0,rumination:0}}
-  ]),
-  q("你发现自己开始频繁查看她的在线状态，你会——","反刍与行为",[
-    {t:"注意到就放下，去做别的事",s:{anxiety:0,avoidance:0,please:0,rumination:1}},
-    {t:"继续看，直到自己累为止",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"干脆关掉提示，眼不见为净",s:{anxiety:1,avoidance:2,please:0,rumination:1}},
-    {t:"问自己到底在怕什么",s:{anxiety:1,avoidance:0,please:0,rumination:2}}
-  ]),
-  q("她对你很好，但你总觉得“不真实”，你会——","恐惧亲密",[
-    {t:"享受当下，不预设结局",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"忍不住找“她其实没那么喜欢你”的证据",s:{anxiety:3,avoidance:1,please:0,rumination:3}},
-    {t:"先保持距离，观察久一点",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"加倍对她好，希望留住这种感觉",s:{anxiety:2,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更理想的恋爱节奏是——","关系节奏",[
-    {t:"各自有生活，定期高质量相处",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"高频联系，最好随时知道彼此状态",s:{anxiety:3,avoidance:0,please:1,rumination:1}},
-    {t:"慢热、低频、不要一下子太近",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"看对方节奏，我可以配合",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("分手后你更容易——","分离反应",[
-    {t:"难过一阵，然后继续生活",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复复盘哪里出了问题",s:{anxiety:1,avoidance:0,please:0,rumination:3}},
-    {t:"很快切断联系，不给自己回头",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"忍不住想联系，又忍住",s:{anxiety:3,avoidance:1,please:0,rumination:2}}
-  ]),
-  q("她心情低落时，你更倾向于——","照顾方式",[
-    {t:"问清楚她需要陪伴还是空间",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"放下自己的事去陪她",s:{anxiety:1,avoidance:0,please:3,rumination:0}},
-    {t:"不太擅长处理，先不打扰",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"会担心是不是自己造成的",s:{anxiety:2,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("你更容易被哪种人吸引——","吸引模式",[
-    {t:"情绪稳定、回应及时的人",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"忽冷忽热、让你猜的人",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"独立、不太需要你的人",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"需要你照顾、离不开你的人",s:{anxiety:1,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("当她说“你想太多了”，你会——","被否定时",[
-    {t:"停下来想想有没有道理",s:{anxiety:0,avoidance:0,please:0,rumination:1}},
-    {t:"更挫败，觉得她不理解你",s:{anxiety:3,avoidance:0,please:1,rumination:2}},
-    {t:"不想再说了，收回情绪",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"先道歉，觉得自己确实麻烦",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你对“被需要”的感觉——","价值感来源",[
-    {t:"喜欢，但不是唯一的安全来源",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"非常重要，不被需要会不安",s:{anxiety:2,avoidance:0,please:3,rumination:1}},
-    {t:"有点压力，希望彼此都能自理",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"会主动制造被需要的机会",s:{anxiety:1,avoidance:0,please:2,rumination:1}}
-  ]),
-  q("如果她说“我们谈谈”，你的身体反应更接近——","冲突预警",[
-    {t:"平静，谈就谈",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"心一沉，开始预演最坏结果",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"想回避，能拖就拖",s:{anxiety:1,avoidance:3,please:0,rumination:0}},
-    {t:"先想自己哪里做错了",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你更认同哪句话——","关系信念",[
-    {t:"爱是合作，不是考试",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"爱需要不断证明，否则会消失",s:{anxiety:3,avoidance:0,please:1,rumination:2}},
-    {t:"爱是各自独立，不要太依赖",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"爱是我对她好，她也会对我好",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("你发现自己在关系里越来越沉默，你会——","自我觉察",[
-    {t:"主动开口，哪怕笨拙",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"继续沉默，反正说了也没用",s:{anxiety:1,avoidance:3,please:0,rumination:2}},
-    {t:"更用力地付出，希望被看见",s:{anxiety:1,avoidance:0,please:3,rumination:1}},
-    {t:"反复想自己是不是变了",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("她对你提出一个你不太想答应的请求，你会——","边界",[
-    {t:"直接说不太方便",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"答应，但心里不舒服",s:{anxiety:1,avoidance:0,please:3,rumination:2}},
-    {t:"找借口推掉，避免正面冲突",s:{anxiety:1,avoidance:2,please:1,rumination:0}},
-    {t:"答应后又反复想值不值得",s:{anxiety:1,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("你觉得自己在恋爱中最容易失去——","自我损耗",[
-    {t:"暂时失去节奏，但能找回来",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"自我，总是围着对方转",s:{anxiety:2,avoidance:0,please:3,rumination:2}},
-    {t:"耐心，很快想抽身",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"情绪稳定，反复内耗",s:{anxiety:2,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("深夜你最容易冒出来的念头是——","夜间反刍",[
-    {t:"明天做什么",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"她今天那句话到底什么意思",s:{anxiety:2,avoidance:0,please:0,rumination:3}},
-    {t:"一个人也挺好，不想谈了",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"我是不是不够好",s:{anxiety:2,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("你更愿意和伴侣分享——","表达深度",[
-    {t:"开心的事和具体的烦恼",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"所有情绪，包括不安",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"只分享轻松的部分",s:{anxiety:0,avoidance:2,please:0,rumination:1}},
-    {t:"看对方想不想听，我再决定",s:{anxiety:1,avoidance:0,please:2,rumination:1}}
-  ]),
-  q("当关系进入平淡期，你会——","平淡期",[
-    {t:"觉得正常，一起建设日常",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"不安，想制造一点波动来确认爱",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"慢慢冷却，觉得没意思了",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"更努力地对对方好",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更容易在哪种关系里内耗——","内耗场景",[
-    {t:"边界清晰、反馈直接的关系",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"对方忽冷忽热的关系",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"太黏、让你没有空间的关系",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"你付出很多但没被看见的关系",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你希望伴侣怎么对你——","核心需要",[
-    {t:"稳定、尊重、有话直说",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"多确认、多表达、不要消失",s:{anxiety:3,avoidance:0,please:1,rumination:0}},
-    {t:"不要逼太紧，给足空间",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"看见你的付出，也主动回馈",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("她当众开了你一个不太舒服的玩笑，你会——","即时反应",[
-    {t:"事后私下告诉她你的感受",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"当场笑，回去反复想",s:{anxiety:1,avoidance:0,please:2,rumination:3}},
-    {t:"当场冷下来，不想解释",s:{anxiety:1,avoidance:3,please:0,rumination:0}},
-    {t:"跟着笑，怕破坏气氛",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你对“承诺”的态度更接近——","承诺",[
-    {t:"重要，但不需要反复说",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"需要反复听到才安心",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"有点压力，更看重行动",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"会用更多付出去换承诺",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你发现自己又在分析她的每一条消息，你会——","元认知",[
-    {t:"笑一下，去做别的事",s:{anxiety:0,avoidance:0,please:0,rumination:1}},
-    {t:"继续分析，停不下来",s:{anxiety:2,avoidance:0,please:0,rumination:3}},
-    {t:"干脆不回，看她什么反应",s:{anxiety:2,avoidance:2,please:0,rumination:1}},
-    {t:"问朋友“她到底什么意思”",s:{anxiety:2,avoidance:0,please:1,rumination:2}}
-  ]),
-  q("如果伴侣需要你搬去另一个城市，你会——","重大让步",[
-    {t:"一起讨论利弊，再做决定",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"大概率会去，怕拒绝会失去她",s:{anxiety:2,avoidance:0,please:3,rumination:1}},
-    {t:"不太愿意，不想打乱自己",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"会去，但之后反复想值不值得",s:{anxiety:1,avoidance:0,please:2,rumination:3}}
-  ]),
-  q("你更害怕自己变成——","自我形象",[
-    {t:"失控的人",s:{anxiety:0,avoidance:2,please:0,rumination:1}},
-    {t:"被丢下的人",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"没有自我的人",s:{anxiety:0,avoidance:2,please:1,rumination:0}},
-    {t:"想太多、把关系搞砸的人",s:{anxiety:2,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("当你感到不安时，你更常——","调节策略",[
-    {t:"直接表达，寻求回应",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复确认，直到暂时安心",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"自己消化，不让她知道",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"先对她更好，再观察反应",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你觉得“好的爱情”更像——","爱情脚本",[
-    {t:"两个完整的人互相支持",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"永远有回应、永远不冷淡",s:{anxiety:3,avoidance:0,please:0,rumination:1}},
-    {t:"各自精彩，互不牵绊",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"我全心全意对她好",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("她最近工作很忙、回复变少，你会——","压力场景",[
-    {t:"表达理解，同时约一个固定联系时间",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"忍不住频繁发消息确认她还在",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"也不找她了，看她什么时候想起你",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"更体贴，尽量不添麻烦",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你在关系里最常忽略的是——","盲区",[
-    {t:"没有明显忽略",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"自己的边界",s:{anxiety:0,avoidance:0,please:3,rumination:1}},
-    {t:"对方的情感需求",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"自己的情绪出口",s:{anxiety:1,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("你更容易因为什么而提分手——","分手触发",[
-    {t:"原则性问题",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复不安、太累了",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"觉得失去自由",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"付出一直不被看见",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("当你一个人待着时，你更容易——","独处状态",[
-    {t:"放松、充电",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"想她，想联系又怕打扰",s:{anxiety:2,avoidance:0,please:1,rumination:2}},
-    {t:"觉得很自在，不太想被打扰",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"复盘最近的关系细节",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("你更愿意把脆弱展示给——","脆弱暴露",[
-    {t:"信任的伴侣和朋友",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"伴侣，但会担心被嫌弃",s:{anxiety:2,avoidance:0,please:1,rumination:2}},
-    {t:"几乎不展示，自己消化",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"看对方态度，她安全我才展示",s:{anxiety:1,avoidance:1,please:1,rumination:1}}
-  ]),
-  q("她忘了你提过的一件小事，你会——","细节敏感",[
-    {t:"提醒一下，不上升",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"觉得她根本不在意你",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"无所谓，我自己也能做",s:{anxiety:0,avoidance:2,please:0,rumination:0}},
-    {t:"不说，但会记很久",s:{anxiety:2,avoidance:0,please:1,rumination:3}}
-  ]),
-  q("你更倾向于怎么表达爱——","爱的语言",[
-    {t:"直接说，也直接做",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"多做少说，怕说多了显得廉价",s:{anxiety:0,avoidance:1,please:2,rumination:0}},
-    {t:"用行动照顾对方的一切",s:{anxiety:1,avoidance:0,please:3,rumination:0}},
-    {t:"看对方怎么对我，我再决定",s:{anxiety:1,avoidance:1,please:0,rumination:2}}
-  ]),
-  q("你觉得自己在恋爱里的“电量”消耗在——","能量分配",[
-    {t:"正常沟通和磨合",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"反复猜测和确认",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"应付对方的靠近",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"压抑自己的需求",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("如果伴侣说“你变了”，你第一反应是——","反馈接收",[
-    {t:"问清楚她具体指什么",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"慌张，怕她要离开",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"防御，觉得她不理解你",s:{anxiety:1,avoidance:2,please:0,rumination:1}},
-    {t:"自责，觉得是自己不够好",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你更愿意选择哪一种伴侣——","伴侣选择",[
-    {t:"情绪稳定、言行一致",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"强烈地表达爱你、需要你",s:{anxiety:2,avoidance:0,please:1,rumination:0}},
-    {t:"独立、不黏、给你自由",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"需要你、离不开你",s:{anxiety:0,avoidance:0,please:3,rumination:0}}
-  ]),
-  q("你经常在关系里感到——","总体感受",[
-    {t:"大体安心，偶尔波动",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"紧张，像在走钢丝",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"有压力，想逃开一下",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"委屈，但说不出口",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你更认同哪种“爱自己”——","自我关系",[
-    {t:"尊重自己的感受和边界",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先让自己变得更好，才值得被爱",s:{anxiety:1,avoidance:0,please:2,rumination:1}},
-    {t:"不依赖任何人",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"停止反复审判自己",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("当你发现对方在关系里退缩，你会——","追逃反应",[
-    {t:"给她一点时间，同时表达你的位置",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"立刻追问，想把连接抓回来",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"也退，谁怕谁",s:{anxiety:1,avoidance:3,please:0,rumination:1}},
-    {t:"对她更好，希望她回来",s:{anxiety:2,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更害怕哪一种“不被爱”——","恐惧变式",[
-    {t:"被平静地告知不合适",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"被冷暴力、被慢慢疏远",s:{anxiety:3,avoidance:0,please:0,rumination:3}},
-    {t:"被过度依赖、失去自己",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"付出一切后被抛弃",s:{anxiety:1,avoidance:0,please:3,rumination:2}}
-  ]),
-  q("你觉得自己在关系里更像——","自我意象",[
-    {t:"一个可以商量的人",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"一个随时可能被替换的人",s:{anxiety:3,avoidance:0,please:0,rumination:2}},
-    {t:"一个需要保留出口的人",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"一个不停付出的人",s:{anxiety:0,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("如果现在单身，你更接近——","单身状态",[
-    {t:"享受，也不排斥进入关系",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"很想谈，但怕再次内耗",s:{anxiety:2,avoidance:1,please:0,rumination:2}},
-    {t:"很自在，不太想改变",s:{anxiety:0,avoidance:3,please:0,rumination:0}},
-    {t:"会为了被爱而降低标准",s:{anxiety:1,avoidance:0,please:3,rumination:1}}
-  ]),
-  q("你更愿意把关系里的问题——","问题归因",[
-    {t:"看成双方需要一起调整的事",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"先怪自己",s:{anxiety:1,avoidance:0,please:3,rumination:2}},
-    {t:"先抽离，不想面对",s:{anxiety:1,avoidance:3,please:0,rumination:0}},
-    {t:"反复分析，直到想通为止",s:{anxiety:1,avoidance:0,please:0,rumination:3}}
-  ]),
-  q("你希望这段测试告诉你——","测试期待",[
-    {t:"我的模式，以及怎么调整",s:{anxiety:0,avoidance:0,please:0,rumination:0}},
-    {t:"我是不是注定谈不好恋爱",s:{anxiety:2,avoidance:0,please:0,rumination:2}},
-    {t:"我是不是适合一个人",s:{anxiety:0,avoidance:3,please:0,rumination:1}},
-    {t:"我为什么总是付出更多",s:{anxiety:0,avoidance:0,please:3,rumination:1}}
-  ])
-];
-
-/* ---------- 2D 卡通人物（内联 SVG） ---------- */
-function avatarSVG(type, gender){
-  const isMale = gender === "male";
-  const skin = isMale ? "#f0c9a8" : "#f7d6c0";
-  const hair = isMale ? "#2c2433" : "#3a2a35";
-  const cloth = TYPES[type].color;
-  const cheek = isMale ? "rgba(255,150,140,.25)" : "rgba(255,130,150,.35)";
-  let eyes, mouth, extra;
-  if(type === "secure"){
-    eyes = `<ellipse cx="86" cy="102" rx="4.5" ry="5" fill="#241d2c"/><ellipse cx="154" cy="102" rx="4.5" ry="5" fill="#241d2c"/>
-            <circle cx="87.5" cy="100" r="1.5" fill="#fff"/><circle cx="155.5" cy="100" r="1.5" fill="#fff"/>`;
-    mouth = `<path d="M110 124 Q120 134 130 124" stroke="#241d2c" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
-    extra = `<circle cx="62" cy="118" r="10" fill="${cheek}"/><circle cx="178" cy="118" r="10" fill="${cheek}"/>`;
-  } else if(type === "anxious"){
-    eyes = `<ellipse cx="86" cy="102" rx="5" ry="6" fill="#241d2c"/><ellipse cx="154" cy="102" rx="5" ry="6" fill="#241d2c"/>
-            <circle cx="84" cy="99" r="1.8" fill="#fff"/><circle cx="152" cy="99" r="1.8" fill="#fff"/>
-            <path d="M78 92 Q86 87 94 92" stroke="#241d2c" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M146 92 Q154 87 162 92" stroke="#241d2c" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-    mouth = `<path d="M112 126 Q120 120 128 126" stroke="#241d2c" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
-    extra = `<path d="M170 88 Q180 80 186 92 Q180 100 170 92Z" fill="#ff9ec7" opacity=".55"/>
-             <circle cx="62" cy="118" r="11" fill="${cheek}"/><circle cx="178" cy="118" r="11" fill="${cheek}"/>`;
-  } else if(type === "avoidant"){
-    eyes = `<path d="M80 102 Q86 98 92 102" stroke="#241d2c" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-            <path d="M148 102 Q154 98 160 102" stroke="#241d2c" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
-    mouth = `<path d="M112 126 L128 126" stroke="#241d2c" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
-    extra = `<path d="M188 70 L188 108" stroke="${cloth}" stroke-width="3" stroke-linecap="round" opacity=".6"/>
-             <rect x="70" y="148" width="100" height="8" rx="4" fill="rgba(255,255,255,.12)"/>`;
-  } else if(type === "fearful"){
-    eyes = `<ellipse cx="86" cy="102" rx="4.5" ry="5.5" fill="#241d2c"/><ellipse cx="154" cy="102" rx="4.5" ry="5.5" fill="#241d2c"/>
-            <circle cx="84.5" cy="100" r="1.5" fill="#fff"/><circle cx="152.5" cy="100" r="1.5" fill="#fff"/>
-            <path d="M78 93 Q86 96 94 93" stroke="#241d2c" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M146 93 Q154 96 162 93" stroke="#241d2c" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-    mouth = `<path d="M110 128 Q120 122 130 128" stroke="#241d2c" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
-    extra = `<path d="M168 82 Q176 72 184 82 Q176 90 168 82Z" fill="#c9a7ff" opacity=".5"/>
-             <path d="M56 82 Q64 72 72 82 Q64 90 56 82Z" fill="#c9a7ff" opacity=".35"/>
-             <circle cx="62" cy="118" r="10" fill="${cheek}"/><circle cx="178" cy="118" r="10" fill="${cheek}"/>`;
-  } else if(type === "pleaser"){
-    eyes = `<path d="M80 104 Q86 98 92 104" stroke="#241d2c" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-            <path d="M148 104 Q154 98 160 104" stroke="#241d2c" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
-    mouth = `<path d="M110 122 Q120 136 130 122" stroke="#241d2c" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
-    extra = `<circle cx="62" cy="118" r="12" fill="${cheek}"/><circle cx="178" cy="118" r="12" fill="${cheek}"/>
-             <path d="M178 58 Q184 50 190 58 Q184 66 178 58Z" fill="#f5d48a" opacity=".7"/>`;
-  } else if(type === "ruminator"){
-    eyes = `<ellipse cx="86" cy="102" rx="4" ry="4.5" fill="#241d2c"/><ellipse cx="154" cy="102" rx="4" ry="4.5" fill="#241d2c"/>
-            <circle cx="84.5" cy="100" r="1.3" fill="#fff"/><circle cx="152.5" cy="100" r="1.3" fill="#fff"/>`;
-    mouth = `<path d="M112 126 Q120 130 128 126" stroke="#241d2c" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-    extra = `<path d="M170 78 Q180 72 184 82" stroke="#e0b0ff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
-             <path d="M174 68 Q184 62 188 72" stroke="#e0b0ff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".45"/>
-             <circle cx="62" cy="118" r="9" fill="${cheek}"/><circle cx="178" cy="118" r="9" fill="${cheek}"/>`;
-  } else if(type === "controller"){
-    eyes = `<rect x="80" y="98" width="12" height="7" rx="3.5" fill="#241d2c"/><rect x="148" y="98" width="12" height="7" rx="3.5" fill="#241d2c"/>`;
-    mouth = `<path d="M112 126 L128 126" stroke="#241d2c" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
-    extra = `<path d="M62 96 L74 96 M178 96 L190 96" stroke="${cloth}" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-             <rect x="76" y="140" width="88" height="6" rx="3" fill="rgba(255,255,255,.12)"/>`;
-  } else {
-    eyes = `<ellipse cx="86" cy="102" rx="4.5" ry="5" fill="#241d2c"/><ellipse cx="154" cy="102" rx="4.5" ry="5" fill="#241d2c"/>
-            <circle cx="87.5" cy="100" r="1.5" fill="#fff"/><circle cx="155.5" cy="100" r="1.5" fill="#fff"/>`;
-    mouth = `<path d="M110 124 Q120 130 130 124" stroke="#241d2c" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
-    extra = `<circle cx="62" cy="118" r="10" fill="${cheek}"/><circle cx="178" cy="118" r="10" fill="${cheek}"/>
-             <circle cx="196" cy="58" r="6" fill="${cloth}" opacity=".5"/><circle cx="204" cy="70" r="3.5" fill="${cloth}" opacity=".35"/>`;
-  }
-  const hairPath = isMale
-    ? `<path d="M54 96 Q58 48 120 44 Q182 48 186 96 Q180 76 160 72 Q140 68 120 70 Q100 68 80 72 Q60 76 54 96Z" fill="${hair}"/>`
-    : `<path d="M50 100 Q50 46 120 42 Q190 46 190 100 Q186 78 168 70 Q150 62 120 64 Q90 62 72 70 Q54 78 50 100Z" fill="${hair}"/>
-       <path d="M50 100 Q44 130 52 150" stroke="${hair}" stroke-width="14" fill="none" stroke-linecap="round"/>
-       <path d="M190 100 Q196 130 188 150" stroke="${hair}" stroke-width="14" fill="none" stroke-linecap="round"/>`;
-  return `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs><radialGradient id="bgGlow" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="${cloth}" stop-opacity=".18"/><stop offset="1" stop-color="${cloth}" stop-opacity="0"/></radialGradient></defs>
-    <circle cx="120" cy="120" r="112" fill="url(#bgGlow)"/>
-    <ellipse cx="120" cy="212" rx="58" ry="10" fill="rgba(0,0,0,.25)"/>
-    <path d="M74 206 Q74 166 120 166 Q166 166 166 206Z" fill="${cloth}" opacity=".9"/>
-    <path d="M104 166 L104 150 L136 150 L136 166Z" fill="${skin}"/>
-    <ellipse cx="120" cy="110" rx="52" ry="56" fill="${skin}"/>
-    ${hairPath}
-    <ellipse cx="120" cy="106" rx="52" ry="48" fill="${skin}" opacity="0"/>
-    ${eyes}${mouth}${extra}
-    <path d="M120 78 Q122 86 128 88" stroke="${hair}" stroke-width="2" fill="none" opacity=".25"/>
+/* =========================================================
+   2D 动漫女性角色 SVG
+   ========================================================= */
+function avatarSVG(type){
+  const uid = 'g' + Math.random().toString(36).slice(2,8);
+  const base = (inner, c1, c2) => `
+  <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="${uid}a" cx="50%" cy="34%" r="72%">
+        <stop offset="0%" stop-color="#FFFFFF"/>
+        <stop offset="100%" stop-color="${c1}"/>
+      </radialGradient>
+      <linearGradient id="${uid}b" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${c2}"/>
+        <stop offset="100%" stop-color="${c1}"/>
+      </linearGradient>
+    </defs>
+    <circle cx="120" cy="120" r="114" fill="url(#${uid}a)"/>
+    <circle cx="120" cy="120" r="104" fill="none" stroke="${c2}" stroke-width="1.2" stroke-dasharray="3 8" opacity=".85"/>
+    ${inner}
   </svg>`;
+
+  if(type === 'secure'){
+    return base(`
+      <!-- 后发 -->
+      <path d="M120 40c-36 0-60 28-60 66 0 24 4 40 4 60h112c0-20 4-36 4-60 0-38-24-66-60-66z" fill="#B98263"/>
+      <!-- 脖子 -->
+      <path d="M106 156h28v20a14 14 0 0 1-28 0z" fill="#F7C9AE"/>
+      <!-- 衣服 -->
+      <path d="M120 176c-26 0-48 14-52 34h104c-4-20-26-34-52-34z" fill="#FF8AB5"/>
+      <!-- 脸 -->
+      <ellipse cx="120" cy="112" rx="49" ry="53" fill="#FFE9DA"/>
+      <ellipse cx="72" cy="116" rx="7" ry="10" fill="#FFE9DA"/>
+      <ellipse cx="168" cy="116" rx="7" ry="10" fill="#FFE9DA"/>
+      <!-- 刘海 -->
+      <path d="M120 56c-30 0-50 22-52 48 6-12 16-19 27-21 6 13 14 19 25 19s19-6 25-19c11 2 21 9 27 21-2-26-22-48-52-48z" fill="#B98263"/>
+      <!-- 笑眼 -->
+      <path d="M86 110q9-12 18 0" stroke="#3A2A38" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+      <path d="M136 110q9-12 18 0" stroke="#3A2A38" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+      <!-- 腮红 -->
+      <ellipse cx="84" cy="130" rx="11" ry="6" fill="#FFAFC8" opacity=".8"/>
+      <ellipse cx="156" cy="130" rx="11" ry="6" fill="#FFAFC8" opacity=".8"/>
+      <!-- 嘴 -->
+      <path d="M112 132q8 8 16 0" stroke="#E06A8E" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- 爱心发夹 -->
+      <path d="M164 66c-3-4-9-3-9 2 0 3 4 6 9 10 5-4 9-7 9-10 0-5-6-6-9-2z" fill="#F9629B"/>
+      <!-- 星星 -->
+      <path d="M62 80l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#FFC9DD"/>
+      <circle cx="186" cy="126" r="4" fill="#FFC9DD"/>
+    `, '#FFE3EF', '#FFC9DD');
+  }
+
+  if(type === 'anxious'){
+    return base(`
+      <!-- 双马尾 -->
+      <path d="M62 96c-16 14-20 42-12 66 4 12 14 14 20 6 6-8 2-24 0-40-2-14 0-26 6-32z" fill="#FFB3CC"/>
+      <path d="M178 96c16 14 20 42 12 66-4 12-14 14-20 6-6-8-2-24 0-40 2-14 0-26-6-32z" fill="#FFB3CC"/>
+      <!-- 后发 -->
+      <path d="M120 40c-36 0-58 26-58 64 0 24 4 40 4 60h108c0-20 4-36 4-60 0-38-22-64-58-64z" fill="#FFB3CC"/>
+      <!-- 脖子 -->
+      <path d="M106 156h28v20a14 14 0 0 1-28 0z" fill="#F7C9AE"/>
+      <!-- 衣服 -->
+      <path d="M120 176c-26 0-48 14-52 34h104c-4-20-26-34-52-34z" fill="#FFD3E3"/>
+      <!-- 脸 -->
+      <ellipse cx="120" cy="112" rx="49" ry="53" fill="#FFE9DA"/>
+      <!-- 刘海 -->
+      <path d="M120 56c-30 0-50 22-52 48 7-13 18-20 30-21 4 12 11 18 22 18s18-6 22-18c12 1 23 8 30 21-2-26-22-48-52-48z" fill="#FFB3CC"/>
+      <!-- 大眼睛 -->
+      <ellipse cx="96" cy="114" rx="11.5" ry="13.5" fill="#3A2A38"/>
+      <circle cx="92" cy="109" r="4.4" fill="#fff"/>
+      <circle cx="100" cy="119" r="2" fill="#fff" opacity=".85"/>
+      <ellipse cx="144" cy="114" rx="11.5" ry="13.5" fill="#3A2A38"/>
+      <circle cx="140" cy="109" r="4.4" fill="#fff"/>
+      <circle cx="148" cy="119" r="2" fill="#fff" opacity=".85"/>
+      <!-- 睫毛 -->
+      <path d="M84 104q12-8 24-1" stroke="#3A2A38" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <path d="M132 103q12-7 24 1" stroke="#3A2A38" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <!-- 泪光 -->
+      <path d="M96 130q2 5 0 7" stroke="#8ED4F0" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M144 130q2 5 0 7" stroke="#8ED4F0" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- 腮红 -->
+      <ellipse cx="82" cy="130" rx="10" ry="5.5" fill="#FF9EC0" opacity=".85"/>
+      <ellipse cx="158" cy="130" rx="10" ry="5.5" fill="#FF9EC0" opacity=".85"/>
+      <!-- 抿嘴 -->
+      <path d="M113 138q7-4 14 0" stroke="#E06A8E" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <!-- 手机 -->
+      <rect x="168" y="150" width="26" height="40" rx="6" fill="#fff" stroke="#FF8AB5" stroke-width="2.4"/>
+      <path d="M181 166c-2-3-6-2-6 1 0 2 3 4 6 6 3-2 6-4 6-6 0-3-4-4-6-1z" fill="#F9629B"/>
+      <!-- 问号 -->
+      <path d="M64 70c0-6 8-6 8 0 0 4-4 4-4 8" stroke="#FF8AB5" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="68" cy="86" r="2.2" fill="#FF8AB5"/>
+    `, '#FFE0EC', '#FFB3CC');
+  }
+
+  if(type === 'avoidant'){
+    return base(`
+      <!-- 后发 -->
+      <path d="M120 42c-34 0-56 26-56 62 0 22 4 38 4 56h104c0-18 4-34 4-56 0-36-22-62-56-62z" fill="#C9CFDD"/>
+      <!-- 脖子 -->
+      <path d="M106 156h28v20a14 14 0 0 1-28 0z" fill="#F7C9AE"/>
+      <!-- 围巾 -->
+      <path d="M74 176c8-10 24-16 46-16s38 6 46 16c-6 14-24 22-46 22s-40-8-46-22z" fill="#E8ECF6"/>
+      <path d="M120 198l-12 26 20-6 6-20z" fill="#DDE3F0"/>
+      <!-- 脸 -->
+      <ellipse cx="120" cy="112" rx="49" ry="53" fill="#FFE9DA"/>
+      <!-- 中分刘海 -->
+      <path d="M120 56c-32 0-52 24-52 50 8-16 22-24 34-26-4 14 0 22 6 26-2-14 2-24 12-30 10 6 14 16 12 30 6-4 10-12 6-26 12 2 26 10 34 26 0-26-20-50-52-50z" fill="#C9CFDD"/>
+      <!-- 半眯眼 -->
+      <path d="M84 114q12 6 24 0" stroke="#3A2A38" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+      <circle cx="96" cy="119" r="3.4" fill="#3A2A38"/>
+      <path d="M132 114q12 6 24 0" stroke="#3A2A38" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+      <circle cx="144" cy="119" r="3.4" fill="#3A2A38"/>
+      <!-- 淡腮红 -->
+      <ellipse cx="82" cy="132" rx="9" ry="5" fill="#FFC9DD" opacity=".6"/>
+      <ellipse cx="158" cy="132" rx="9" ry="5" fill="#FFC9DD" opacity=".6"/>
+      <!-- 平嘴 -->
+      <path d="M112 138h16" stroke="#D98098" stroke-width="2.8" stroke-linecap="round"/>
+      <!-- 雪花 -->
+      <g stroke="#A9B6D6" stroke-width="2.4" stroke-linecap="round">
+        <path d="M58 96v16M50 104h16M52 98l12 12M64 98L52 110"/>
+      </g>
+      <circle cx="182" cy="86" r="3" fill="#C9CFDD"/>
+    `, '#EDF0F8', '#C9CFDD');
+  }
+
+  // fearful
+  return base(`
+    <!-- 后发（微卷） -->
+    <path d="M120 40c-36 0-58 26-58 64 0 12 2 22 4 30-6-2-10 2-8 8 2 8 12 10 16 4 4 14 4 24 4 34h108c0-10 0-20 4-34 4 6 14 4 16-4 2-6-2-10-8-8 2-8 4-18 4-30 0-38-22-64-58-64z" fill="#C6A8FF"/>
+    <!-- 脖子 -->
+    <path d="M106 156h28v20a14 14 0 0 1-28 0z" fill="#F7C9AE"/>
+    <!-- 衣服 -->
+    <path d="M120 176c-26 0-48 14-52 34h104c-4-20-26-34-52-34z" fill="#C6A8FF" opacity=".55"/>
+    <!-- 脸 -->
+    <ellipse cx="120" cy="112" rx="49" ry="53" fill="#FFE9DA"/>
+    <!-- 乱刘海 -->
+    <path d="M120 56c-32 0-52 22-52 48 6-12 16-18 26-20-2 10 4 16 10 18-6-10-2-18 6-22 4 10 10 14 10 14s6-4 10-14c8 4 12 12 6 22 6-2 12-8 10-18 10 2 20 8 26 20 0-26-20-48-52-48z" fill="#C6A8FF"/>
+    <!-- 一只圆眼 一只眯眼 -->
+    <ellipse cx="96" cy="114" rx="11" ry="13" fill="#3A2A38"/>
+    <circle cx="92" cy="109" r="4.2" fill="#fff"/>
+    <path d="M132 112q12 6 24 0" stroke="#3A2A38" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+    <circle cx="144" cy="117" r="3.2" fill="#3A2A38"/>
+    <!-- 挑起的眉 -->
+    <path d="M84 96q12-6 24 0" stroke="#8E6FCC" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <!-- 腮红 -->
+    <ellipse cx="82" cy="131" rx="10" ry="5.5" fill="#FF9EC0" opacity=".8"/>
+    <ellipse cx="158" cy="131" rx="10" ry="5.5" fill="#FF9EC0" opacity=".8"/>
+    <!-- 波浪嘴 -->
+    <path d="M110 138q5-6 10 0t10 0" stroke="#E06A8E" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    <!-- 创可贴 -->
+    <g transform="rotate(-18 158 100)">
+      <rect x="148" y="95" width="22" height="10" rx="5" fill="#FFD3E3"/>
+      <rect x="154" y="95" width="10" height="10" fill="#FFB3CC"/>
+    </g>
+    <!-- 碎心 -->
+    <path d="M60 78c-4-5-11-4-11 2 0 4 5 7 11 11 6-4 11-7 11-11 0-6-7-7-11-2z" fill="#F9629B" opacity=".9"/>
+    <path d="M60 80l-3 6 5 1-3 6" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 闪电 -->
+    <path d="M186 62l-8 14h7l-4 10 10-14h-7z" fill="#C6A8FF"/>
+  `, '#F3EBFF', '#C6A8FF');
 }
 
-/* ---------- 状态 ---------- */
-const state = {
-  gender: null,
-  questions: [],
-  answers: [],
-  index: 0,
-  locked: false
-};
-
-/* ---------- DOM ---------- */
+/* =========================================================
+   工具函数
+   ========================================================= */
 const $ = s => document.querySelector(s);
-const screens = {
-  cover: $("#screenCover"),
-  test: $("#screenTest"),
-  calc: $("#screenCalc"),
-  result: $("#screenResult")
-};
-function show(name){
-  Object.values(screens).forEach(s => s.classList.remove("active"));
-  screens[name].classList.add("active");
-  window.scrollTo({top:0,behavior:"instant"});
+const shuffle = arr => { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const pick = (arr,n) => shuffle(arr).slice(0,n);
+const mean = arr => arr.reduce((a,b)=>a+b,0)/arr.length;
+
+/* =========================================================
+   背景粒子
+   ========================================================= */
+(function particles(){
+  const cv = document.getElementById('fx');
+  const ctx = cv.getContext('2d');
+  let W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2),ps=[];
+  function resize(){
+    W = cv.width = innerWidth*dpr;
+    H = cv.height = innerHeight*dpr;
+    cv.style.width = innerWidth+'px';
+    cv.style.height = innerHeight+'px';
+  }
+  function init(){
+    ps = [];
+    const n = Math.min(38, Math.floor(innerWidth/12));
+    for(let i=0;i<n;i++){
+      ps.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: (1+Math.random()*2.6)*dpr,
+        vx: (Math.random()-.5)*0.18*dpr,
+        vy: (-0.14-Math.random()*0.26)*dpr,
+        a: 0.16+Math.random()*0.34,
+        heart: Math.random()<0.32,
+        rot: Math.random()*Math.PI*2,
+        vr: (Math.random()-.5)*0.012
+      });
+    }
+  }
+  function heartPath(x,y,s,rot){
+    ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.scale(s,s);
+    ctx.beginPath();
+    ctx.moveTo(0,3.2);
+    ctx.bezierCurveTo(-4.4,-0.8,-4.4,-5.4,0,-4.2);
+    ctx.bezierCurveTo(4.4,-5.4,4.4,-0.8,0,3.2);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of ps){
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      if(p.y < -30*dpr){ p.y = H+20*dpr; p.x = Math.random()*W; }
+      if(p.x < -30*dpr) p.x = W+20*dpr;
+      if(p.x > W+30*dpr) p.x = -20*dpr;
+      ctx.fillStyle = `rgba(249,98,155,${p.a})`;
+      if(p.heart) heartPath(p.x,p.y,p.r*0.72,p.rot);
+      else { ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }
+    }
+    requestAnimationFrame(loop);
+  }
+  resize(); init(); loop();
+  addEventListener('resize', ()=>{ resize(); init(); });
+})();
+
+/* =========================================================
+   爱心爆发特效
+   ========================================================= */
+function burst(x,y){
+  for(let i=0;i<9;i++){
+    const el = document.createElement('span');
+    el.className = 'burst';
+    el.textContent = '♥';
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    el.style.fontSize = (9+Math.random()*11)+'px';
+    const ang = Math.random()*Math.PI*2;
+    const dist = 36+Math.random()*64;
+    el.style.setProperty('--tx', Math.cos(ang)*dist+'px');
+    el.style.setProperty('--ty', Math.sin(ang)*dist+'px');
+    el.style.setProperty('--rot', (Math.random()*180-90)+'deg');
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 880);
+  }
 }
 
-/* ---------- 性别选择 ---------- */
-document.querySelectorAll(".genderBtn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".genderBtn").forEach(b => b.classList.remove("sel"));
-    btn.classList.add("sel");
-    state.gender = btn.dataset.gender;
-    $("#startBtn").disabled = false;
-    if(navigator.vibrate) navigator.vibrate(8);
+/* =========================================================
+   屏幕切换
+   ========================================================= */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('is-active'));
+  const t = document.getElementById(id);
+  t.classList.add('is-active');
+  t.scrollTop = 0;
+}
+
+/* =========================================================
+   状态
+   ========================================================= */
+const state = { gender:null, questions:[], index:0, answers:[], locked:false };
+
+/* =========================================================
+   流程
+   ========================================================= */
+$('#btnStart').addEventListener('click', ()=> go('sGender'));
+
+document.querySelectorAll('.g-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    state.gender = card.dataset.gender;
+    startQuiz();
   });
 });
 
-/* ---------- 抽题：每维度抽约 12—13 题，共 50 ---------- */
-function buildQuestions(gender){
-  const pool = gender === "male" ? MALE_POOL : FEMALE_POOL;
-  const byDim = {};
-  pool.forEach(item => {
-    (byDim[item.dim] = byDim[item.dim] || []).push(item);
-  });
-  const dims = Object.keys(byDim);
-  const perDim = Math.floor(50 / dims.length);
-  let selected = [];
-  dims.forEach(d => {
-    const arr = shuffle([...byDim[d]]);
-    selected.push(...arr.slice(0, perDim));
-  });
-  // 补足到 50 题
-  const used = new Set(selected);
-  const remaining = shuffle(pool.filter(q => !used.has(q)));
-  while(selected.length < 50 && remaining.length){
-    selected.push(remaining.pop());
-  }
-  // 打乱顺序，但保留每题的维度标识
-  return shuffle(selected).slice(0, 50);
-}
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
-}
-
-/* ---------- 开始 ---------- */
-$("#startBtn").addEventListener("click", () => {
-  if(!state.gender) return;
-  state.questions = buildQuestions(state.gender);
-  state.answers = new Array(50).fill(null);
+function startQuiz(){
+  const bank = BANK[state.gender];
+  const aQ = pick(bank.a, 25).map(t=>({dim:'a', text:t}));
+  const vQ = pick(bank.v, 25).map(t=>({dim:'v', text:t}));
+  state.questions = shuffle([...aQ, ...vQ]);
   state.index = 0;
+  state.answers = [];
   state.locked = false;
-  show("test");
-  renderQuestion();
-  if(navigator.vibrate) navigator.vibrate(12);
-});
-
-/* ---------- 渲染题目 ---------- */
-const ringFg = $("#ringFg");
-const CIRC = 2 * Math.PI * 22;
-function renderQuestion(){
-  const q = state.questions[state.index];
-  if(!q) return;
-  const qText = $("#questionText");
-  qText.classList.add("out");
-  setTimeout(() => {
-    qText.textContent = q.text;
-    qText.classList.remove("out");
-  }, 120);
-
-  $("#qIndex").textContent = `QUESTION ${String(state.index+1).padStart(2,"0")} / 50`;
-  $("#qDim").textContent = q.dim;
-  const pct = Math.round((state.index) / 50 * 100);
-  $("#barFill").style.width = pct + "%";
-  $("#ringNum").textContent = pct + "%";
-  ringFg.setAttribute("stroke-dasharray", CIRC.toFixed(1));
-  ringFg.setAttribute("stroke-dashoffset", (CIRC * (1 - pct/100)).toFixed(1));
-
-  const box = $("#optionsBox");
-  box.innerHTML = "";
-  const keys = ["A","B","C","D"];
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.className = "opt" + (state.answers[state.index] === i ? " sel" : "");
-    btn.innerHTML = `<span class="dot"></span><span>${opt.t}</span><span class="kbd">${keys[i]}</span>`;
-    btn.addEventListener("click", () => choose(i));
-    box.appendChild(btn);
-  });
-  $("#backBtn").disabled = state.index === 0;
-  state.locked = false;
+  go('sQuiz');
+  renderQuestion(false);
+  updateProgress();
+  setHint('没有对错，只有像不像你。');
 }
 
-function choose(i){
+function setHint(txt){
+  const h = $('#quizHint');
+  h.textContent = txt;
+  h.classList.remove('pop');
+  void h.offsetWidth;
+  h.classList.add('pop');
+}
+
+function updateProgress(){
+  const p = Math.round(state.index / state.questions.length * 100);
+  $('#barFill').style.width = p + '%';
+  $('#pctText').textContent = p + '%';
+  $('#curNum').textContent = String(Math.min(state.index+1, state.questions.length)).padStart(2,'0');
+}
+
+function renderQuestion(animate){
+  const card = $('#qCard');
+  const q = state.questions[state.index];
+
+  const fill = () => {
+    $('#qText').textContent = q.text;
+    $('#qTag').textContent = q.dim === 'a' ? '亲密感受' : '亲密距离';
+    const box = $('#opts');
+    box.innerHTML = '';
+    OPTIONS.forEach((label,i)=>{
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = `<span class="k">${'ABCDE'[i]}</span><span>${label}</span>`;
+      b.addEventListener('click', ev => choose(b, i+1, ev));
+      box.appendChild(b);
+    });
+    updateProgress();
+  };
+
+  if(animate){
+    card.classList.remove('in');
+    card.classList.add('out');
+    setTimeout(()=>{
+      fill();
+      card.classList.remove('out');
+      card.classList.add('in');
+    }, 210);
+  } else {
+    fill();
+    card.classList.remove('out');
+    card.classList.add('in');
+  }
+}
+
+function choose(el, val, ev){
   if(state.locked) return;
   state.locked = true;
-  state.answers[state.index] = i;
-  const btns = document.querySelectorAll("#optionsBox .opt");
-  btns.forEach((b, idx) => b.classList.toggle("sel", idx === i));
-  if(navigator.vibrate) navigator.vibrate(6);
-  setTimeout(() => {
-    if(state.index < 49){
-      state.index++;
-      renderQuestion();
+
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('picked'));
+  el.classList.add('picked');
+
+  const r = el.getBoundingClientRect();
+  burst(r.left + r.width*0.5, r.top + r.height*0.5);
+
+  const q = state.questions[state.index];
+  state.answers.push({ dim:q.dim, val });
+
+  state.index++;
+  updateProgress();
+
+  const done = state.index;
+  if(done === 10) setHint('已经走过 1/5，你的轮廓开始清晰了。');
+  else if(done === 25) setHint('过半了，继续保持第一直觉。');
+  else if(done === 40) setHint('快到终点了，最后 10 题。');
+
+  setTimeout(()=>{
+    if(state.index >= state.questions.length){
+      finish();
     } else {
-      goCalc();
+      renderQuestion(true);
+      state.locked = false;
     }
-  }, 260);
+  }, 330);
 }
 
-$("#backBtn").addEventListener("click", () => {
-  if(state.index > 0){
-    state.index--;
-    renderQuestion();
-  }
-});
-$("#quitBtn").addEventListener("click", () => {
-  if(confirm("退出后本次答题不会保存，确定吗？")){
-    resetAll();
-  }
-});
+/* =========================================================
+   结算
+   ========================================================= */
+function finish(){
+  go('sLoading');
+  const texts = ['正在解析你的依恋图谱…','比对四种依恋原型…','生成你的专属恋爱建议…'];
+  let i = 0;
+  $('#loadingText').textContent = texts[0];
+  $('#loadFill').style.width = '0%';
 
-/* ---------- 计算 ---------- */
-function goCalc(){
-  show("calc");
-  const steps = ["DIMENSION 01 / 04","DIMENSION 02 / 04","DIMENSION 03 / 04","DIMENSION 04 / 04"];
-  const texts = ["正在读取你的亲密模式…","正在拆解安全感来源…","正在评估内耗回路…","正在匹配你的类型画像…"];
-  let k = 0;
-  const timer = setInterval(() => {
-    $("#calcTxt").textContent = texts[k] || texts[texts.length-1];
-    $("#calcStep").textContent = steps[k] || steps[steps.length-1];
-    k++;
-    if(k >= 4){
-      clearInterval(timer);
-      setTimeout(computeAndShow, 420);
-    }
-  }, 430);
+  setTimeout(()=>{ $('#loadFill').style.width='38%'; }, 120);
+  const t1 = setInterval(()=>{
+    i++;
+    if(i < texts.length) $('#loadingText').textContent = texts[i];
+  }, 800);
+  setTimeout(()=>{ $('#loadFill').style.width='100%'; }, 1500);
+
+  setTimeout(()=>{
+    clearInterval(t1);
+    showResult();
+  }, 2400);
 }
 
-function computeAndShow(){
-  const sums = {anxiety:0, avoidance:0, please:0, rumination:0};
-  let valid = 0;
-  state.questions.forEach((q, idx) => {
-    const a = state.answers[idx];
-    if(a == null) return;
-    valid++;
-    const s = q.opts[a].s;
-    Object.keys(sums).forEach(k => sums[k] += s[k] || 0);
-  });
-  const maxPer = 150; // 50 题 × 最高 3
-  const scores = {};
-  Object.keys(sums).forEach(k => {
-    scores[k] = Math.min(100, Math.round(sums[k] / maxPer * 100));
-  });
+function showResult(){
+  const aVals = state.answers.filter(x=>x.dim==='a').map(x=>x.val);
+  const vVals = state.answers.filter(x=>x.dim==='v').map(x=>x.val);
+  const aScore = Math.round((mean(aVals)-1)/4*100);
+  const vScore = Math.round((mean(vVals)-1)/4*100);
 
-  // 类型判定
-  let typeKey = classify(scores);
-  renderResult(typeKey, scores);
+  let key;
+  if(aScore >= 50 && vScore >= 50) key = 'fearful';
+  else if(aScore >= 50) key = 'anxious';
+  else if(vScore >= 50) key = 'avoidant';
+  else key = 'secure';
 
-  show("result");
-  setTimeout(() => {
-    document.querySelectorAll(".dimFill").forEach(el => {
-      el.style.width = el.dataset.w + "%";
-    });
-    drawRadar(scores);
-  }, 180);
-  launchConfetti();
-}
+  const T = TYPES[key];
 
-function classify(s){
-  const a = s.anxiety, v = s.avoidance, p = s.please, r = s.rumination;
-  // 先看极端组合
-  if(a >= 65 && v >= 62) return "fearful";
-  if(a >= 68 && r >= 68) return "anxious";
-  if(v >= 68) return "avoidant";
-  if(p >= 68) return "pleaser";
-  if(r >= 72) return "ruminator";
-  if(a >= 62 && v <= 40) return "controller";
-  if(a <= 38 && v <= 40 && p <= 55 && r <= 55) return "secure";
-  // 没有极端项 → 混合
-  return "mixed";
-}
-
-/* ---------- 结果渲染 ---------- */
-let currentTypeKey = null;
-let currentScores = null;
-
-function renderResult(typeKey, scores){
-  currentTypeKey = typeKey;
-  currentScores = scores;
-  const T = TYPES[typeKey];
-  $("#avatarBox").innerHTML = avatarSVG(typeKey, state.gender);
-  $("#typeName").textContent = T.name;
-  $("#typeEn").textContent = T.en;
-  $("#typeLine").textContent = T.line;
-
-  const dimLabels = {
-    anxiety: "安全感焦虑",
-    avoidance: "亲密回避",
-    please: "讨好倾向",
-    rumination: "内耗反刍"
+  const bandText = (pct, label) => {
+    if(pct < 30) return `你的${label}偏低，在关系里相对放松。`;
+    if(pct < 50) return `你的${label}略低于平均线，整体可控。`;
+    if(pct < 70) return `你的${label}偏高，是关系中需要被照顾的部分。`;
+    return `你的${label}很高，这可能是你最容易被触发的地方。`;
   };
-  const dimList = $("#dimList");
-  dimList.innerHTML = "";
-  const colors = ["c1","c2","c3","c4"];
-  Object.keys(dimLabels).forEach((k, i) => {
-    const row = document.createElement("div");
-    row.className = "dimRow";
-    row.innerHTML = `<div class="dimTop"><span>${dimLabels[k]}</span><b>${scores[k]}</b></div>
-      <div class="dimTrack"><div class="dimFill ${colors[i]}" data-w="${scores[k]}"></div></div>`;
-    dimList.appendChild(row);
-  });
 
-  const analysisBox = $("#analysisBox");
-  analysisBox.innerHTML = T.analysis.map(p => `<p>${p}</p>`).join("");
+  const root = $('#resultRoot');
+  root.innerHTML = `
+    <div class="res-hero">
+      <div class="res-badge">你 的 依 恋 类 型</div>
+      <div class="avatar-box">${avatarSVG(key)}</div>
+      <h2 class="res-name grad">${T.name}</h2>
+      <p class="res-en">${T.en} · ${T.alias}</p>
+      <p class="res-tagline">${T.tagline}</p>
+    </div>
 
-  const matchGrid = $("#matchGrid");
-  matchGrid.innerHTML = `
-    <div class="matchCell good"><b>适配</b>${T.good.map(x=>`<div>${x}</div>`).join("")}</div>
-    <div class="matchCell bad"><b>雷区</b>${T.bad.map(x=>`<div>${x}</div>`).join("")}</div>`;
+    <div class="res-card">
+      <h3>你的依恋分数</h3>
+      <div class="scores">
+        <div class="score-row">
+          <div class="score-head"><span>依恋焦虑 · 怕被抛弃</span><b>${aScore}%</b></div>
+          <div class="score-bar"><i data-w="${aScore}"></i></div>
+        </div>
+        <div class="score-row">
+          <div class="score-head"><span>依恋回避 · 怕太亲密</span><b>${vScore}%</b></div>
+          <div class="score-bar"><i data-w="${vScore}"></i></div>
+        </div>
+      </div>
+      <p class="score-note">${bandText(aScore,'焦虑维度')}${bandText(vScore,'回避维度')}两个维度共同决定你的类型：低焦虑低回避为安全型，高焦虑低回避为焦虑型，低焦虑高回避为回避型，双高为混乱型。</p>
+    </div>
 
-  const adviceList = $("#adviceList");
-  adviceList.innerHTML = T.advice.map((a, i) => 
-    `<div class="adviceItem"><span class="no">${i+1}</span><div>${a}</div></div>`
-  ).join("");
-}
+    <div class="res-card">
+      <h3>关于你的亲密模式</h3>
+      ${T.analysis.map(p=>`<p>${p}</p>`).join('')}
+    </div>
 
-/* ---------- 雷达图 ---------- */
-function drawRadar(scores){
-  const canvas = $("#radar");
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const W = 280, H = 240;
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  canvas.style.width = W + "px"; canvas.style.height = H + "px";
-  const ctx = canvas.getContext("2d");
-  ctx.scale(dpr, dpr);
-  ctx.clearRect(0,0,W,H);
-  const cx = W/2, cy = H/2 + 6, R = 82;
-  const labels = ["焦虑","回避","讨好","内耗"];
-  const vals = [scores.anxiety, scores.avoidance, scores.please, scores.rumination].map(v => Math.max(8, v));
-  const N = 4;
+    <div class="res-card">
+      <h3>你可能会有这些瞬间</h3>
+      <ul>${T.traits.map(t=>`<li>${t}</li>`).join('')}</ul>
+    </div>
 
-  // 网格
-  for(let ring = 1; ring <= 4; ring++){
-    const r = R * ring / 4;
-    ctx.beginPath();
-    for(let i=0;i<N;i++){
-      const ang = -Math.PI/2 + i*2*Math.PI/N;
-      const x = cx + Math.cos(ang)*r, y = cy + Math.sin(ang)*r;
-      i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
-    }
-    ctx.closePath();
-    ctx.strokeStyle = "rgba(255,255,255,.07)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  }
-  // 轴线
-  for(let i=0;i<N;i++){
-    const ang = -Math.PI/2 + i*2*Math.PI/N;
-    ctx.beginPath(); ctx.moveTo(cx,cy);
-    ctx.lineTo(cx+Math.cos(ang)*R, cy+Math.sin(ang)*R);
-    ctx.strokeStyle = "rgba(255,255,255,.06)"; ctx.stroke();
-  }
-  // 数据区域
-  ctx.beginPath();
-  for(let i=0;i<N;i++){
-    const ang = -Math.PI/2 + i*2*Math.PI/N;
-    const r = R * vals[i] / 100;
-    const x = cx + Math.cos(ang)*r, y = cy + Math.sin(ang)*r;
-    i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
-  }
-  ctx.closePath();
-  const grad = ctx.createLinearGradient(cx-R, cy-R, cx+R, cy+R);
-  grad.addColorStop(0, "rgba(212,184,255,.45)");
-  grad.addColorStop(1, "rgba(255,184,217,.35)");
-  ctx.fillStyle = grad; ctx.fill();
-  ctx.strokeStyle = "rgba(212,184,255,.85)"; ctx.lineWidth = 2; ctx.stroke();
-  // 数据点
-  for(let i=0;i<N;i++){
-    const ang = -Math.PI/2 + i*2*Math.PI/N;
-    const r = R * vals[i] / 100;
-    const x = cx + Math.cos(ang)*r, y = cy + Math.sin(ang)*r;
-    ctx.beginPath(); ctx.arc(x,y,3.2,0,Math.PI*2);
-    ctx.fillStyle = "#d4b8ff"; ctx.fill();
-  }
-  // 标签
-  ctx.font = "11px PingFang SC, sans-serif";
-  ctx.fillStyle = "rgba(242,237,247,.6)";
-  ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  for(let i=0;i<N;i++){
-    const ang = -Math.PI/2 + i*2*Math.PI/N;
-    const x = cx + Math.cos(ang)*(R+22), y = cy + Math.sin(ang)*(R+18);
-    ctx.fillText(labels[i], x, y);
-  }
-}
+    <div class="res-card accent">
+      <h3>给你的 5 条恋爱建议</h3>
+      <ol>${T.advice.map(t=>`<li>${t}</li>`).join('')}</ol>
+    </div>
 
-/* ---------- Confetti（零依赖轻量实现） ---------- */
-const confettiCanvas = $("#confettiCanvas");
-const cctx = confettiCanvas.getContext("2d");
-let confettiParticles = [];
-let confettiRunning = false;
+    <div class="res-card">
+      <h3>和谁在一起会更舒服</h3>
+      <p>${T.partner}</p>
+    </div>
 
-function resizeConfetti(){
-  confettiCanvas.width = innerWidth * (window.devicePixelRatio > 1 ? 2 : 1);
-  confettiCanvas.height = innerHeight * (window.devicePixelRatio > 1 ? 2 : 1);
-  confettiCanvas.style.width = innerWidth + "px";
-  confettiCanvas.style.height = innerHeight + "px";
-  cctx.setTransform(1,0,0,1,0,0);
-  cctx.scale(confettiCanvas.width/innerWidth, confettiCanvas.height/innerHeight);
-}
-window.addEventListener("resize", resizeConfetti);
-resizeConfetti();
+    <div class="res-card">
+      <h3>你的成长课题</h3>
+      <p>${T.grow}</p>
+    </div>
 
-function launchConfetti(){
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const T = TYPES[currentTypeKey];
-  const colors = [T.color, "#d4b8ff", "#ffb8d9", "#f5d48a", "#ffffff"];
-  confettiParticles = [];
-  const count = 110;
-  for(let i=0;i<count;i++){
-    confettiParticles.push({
-      x: innerWidth * (0.2 + Math.random()*0.6),
-      y: innerHeight * (0.15 + Math.random()*0.2),
-      vx: (Math.random()-0.5)*6,
-      vy: -Math.random()*7 - 2,
-      size: 3 + Math.random()*5,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      rot: Math.random()*Math.PI*2,
-      vr: (Math.random()-0.5)*0.3,
-      life: 1
+    <div class="res-foot">
+      <button class="btn btn-ghost" id="btnRestart">重新测一次</button>
+      <p class="tip">截图保存 · 随时回看你的依恋图谱</p>
+      <p class="disclaimer">本测评基于成人依恋理论（Bowlby / Hazan & Shaver）编制，结果用于自我觉察与关系理解，不构成临床心理诊断。</p>
+    </div>
+  `;
+
+  go('sResult');
+
+  // 分数条动画
+  setTimeout(()=>{
+    root.querySelectorAll('.score-bar i').forEach(el=>{
+      el.style.width = el.dataset.w + '%';
     });
-  }
-  if(!confettiRunning){
-    confettiRunning = true;
-    requestAnimationFrame(confettiLoop);
-  }
-}
+  }, 380);
 
-function confettiLoop(){
-  cctx.clearRect(0,0,innerWidth,innerHeight);
-  let alive = false;
-  confettiParticles.forEach(p => {
-    p.vy += 0.22;
-    p.vx *= 0.995;
-    p.x += p.vx;
-    p.y += p.vy;
-    p.rot += p.vr;
-    p.life -= 0.006;
-    if(p.life > 0 && p.y < innerHeight + 40){
-      alive = true;
-      cctx.save();
-      cctx.globalAlpha = Math.max(0, p.life);
-      cctx.translate(p.x, p.y);
-      cctx.rotate(p.rot);
-      cctx.fillStyle = p.color;
-      cctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
-      cctx.restore();
-    }
+  // 卡片依次浮现
+  const cards = root.querySelectorAll('.res-card');
+  cards.forEach((c,i)=>{
+    setTimeout(()=>c.classList.add('show'), 260 + i*130);
   });
-  if(alive){
-    requestAnimationFrame(confettiLoop);
-  } else {
-    confettiRunning = false;
-    cctx.clearRect(0,0,innerWidth,innerHeight);
-  }
+
+  $('#btnRestart').addEventListener('click', ()=>{
+    state.locked = false;
+    go('sGender');
+  });
 }
-
-/* ---------- 复制文案 ---------- */
-$("#copyBtn").addEventListener("click", async () => {
-  const T = TYPES[currentTypeKey];
-  const g = state.gender === "male" ? "男生版" : "女生版";
-  const text = `【恋人类型图鉴 · ${g}】
-我的类型：${T.name}
-${T.line}
-
-焦虑 ${currentScores.anxiety} · 回避 ${currentScores.avoidance} · 讨好 ${currentScores.please} · 内耗 ${currentScores.rumination}
-
-${T.analysis[0].replace(/<[^>]+>/g,"")}
-
-#恋人类型图鉴 #恋爱人格测试 #亲密关系 #依恋类型`;
-  try{
-    await navigator.clipboard.writeText(text);
-    toast("已复制，去小红书分享吧");
-  }catch(e){
-    const ta = document.createElement("textarea");
-    ta.value = text; document.body.appendChild(ta); ta.select();
-    document.execCommand("copy"); ta.remove();
-    toast("已复制");
-  }
-});
-
-function toast(msg){
-  const t = $("#copyToast");
-  t.textContent = msg;
-  t.classList.add("on");
-  setTimeout(() => t.classList.remove("on"), 1800);
-}
-
-/* ---------- 重测 ---------- */
-$("#retakeBtn").addEventListener("click", resetAll);
-
-function resetAll(){
-  state.gender = null;
-  state.questions = [];
-  state.answers = [];
-  state.index = 0;
-  state.locked = false;
-  document.querySelectorAll(".genderBtn").forEach(b => b.classList.remove("sel"));
-  $("#startBtn").disabled = true;
-  cctx.clearRect(0,0,innerWidth,innerHeight);
-  confettiParticles = [];
-  confettiRunning = false;
-  show("cover");
-}
-
-/* ---------- 键盘支持（桌面调试） ---------- */
-document.addEventListener("keydown", e => {
-  if(!screens.test.classList.contains("active")) return;
-  const map = {"1":0,"2":1,"3":2,"4":3,"a":0,"b":1,"c":2,"d":3};
-  const k = e.key.toLowerCase();
-  if(map[k] !== undefined){
-    const btns = document.querySelectorAll("#optionsBox .opt");
-    if(btns[map[k]]) btns[map[k]].click();
-  }
-});
 </script>
 </body>
 </html>
